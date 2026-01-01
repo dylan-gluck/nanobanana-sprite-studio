@@ -1,33 +1,76 @@
-# NanoBanana Sprite Studio UI
+# NanoBanana Sprite Studio
 
-Simple image-generating UI specifically focused on  charachter and sprite workflows, uses nanobanana models (gemini-2.5-flash-image & gemini-3-pro-image-preview).
+Internal tool for generating and editing character images and sprite sheets using Gemini image models.
 
-<changelog>
-* New project, just initialized. Requirements and reference added, basic Nextjs app.
-</changelog>
+## Setup
 
----
+1. Install dependencies:
+```bash
+bun install
+```
 
-## Requirements:
+2. Add your Gemini API key to `.env`:
+```
+GEMINI_API_KEY=your_key_here
+```
 
-1. Nextjs app running locally. No auth, SPA. Internal tool only
-2. Dashboard with two workflow views for generating/editing charachter or sprites
-3. Backend routes: gen-character, gen-sprite, edit-character, edit-sprite
-4. Assets folder with sub folder organization: "characters", "sprites", "reference"
+3. Start the development server:
+```bash
+bun dev
+```
 
-### Workflows:
+## Tech Stack
 
-Workflow 1: Character Gen/Edit
-* Generate character from text-prompt + reference images
-* Iterate on character design "edit" image with prompt, optionally attach references. 
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- shadcn/ui components
+- @google/genai (Gemini API)
 
-Workflow 2: Character -> sprite
-* Generate sprite sheet/grid from character for flipbook animation
-* Select character image from selection of assets in `/assets/characters/`
-* Enter descriptions of one or more animation sequences and number of frames (sequence_name, sequence_description, sequence_length)
-* Output: Sprite grid of all animations using input character
+## Project Structure
 
----
+```
+app/
+  api/
+    gen-character/    POST: generate character from prompt + references
+    edit-character/   POST: edit existing character with prompt
+    gen-sprite/       POST: generate sprite sheet from character
+    assets/           GET: list saved assets by folder
+components/
+  character-workflow.tsx
+  sprite-workflow.tsx
+  image-upload.tsx
+  asset-picker.tsx
+  image-preview.tsx
+lib/
+  gemini.ts           Gemini client and helpers
+public/
+  assets/
+    characters/       Saved character images
+    sprites/          Saved sprite sheets
+    reference/        Reference images
+```
 
-## Project Documentation:
-* `./REFERENCE.md` - NanoBana API Documentation
+## Workflows
+
+**Character Generation/Editing**
+- Generate new characters from text prompts with optional reference images
+- Edit existing characters with modification prompts
+
+**Sprite Sheet Generation**
+- Select a character from saved assets
+- Define animation sequences (name, description, frame count)
+- Generate sprite grid for all sequences
+
+## API Reference
+
+See `REFERENCE.md` for Gemini API documentation.
+
+## Changelog
+
+- Initial implementation: dashboard with character and sprite workflows
+- API routes for generation, editing, and asset management
+- Drag-drop image upload with multi-image support
+- Asset picker for saved images
+- Auto-save generated images to assets folder
