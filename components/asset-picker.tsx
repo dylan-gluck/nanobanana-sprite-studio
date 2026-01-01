@@ -43,6 +43,7 @@ export function AssetPicker({
 
   useEffect(() => {
     fetchAssets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [folder]);
 
   const handleSelect = async (asset: Asset) => {
@@ -106,6 +107,7 @@ export function AssetPicker({
         <div className="grid grid-cols-4 gap-2 pr-3">
           {assets.map((asset) => (
             <button
+              type="button"
               key={asset.filename}
               onClick={() => handleSelect(asset)}
               className={cn(

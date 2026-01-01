@@ -54,9 +54,21 @@ export function ImageUpload({
     onChange(value.filter((_, i) => i !== index));
   };
 
+  const openFilePicker = () => {
+    if (value.length >= maxImages) return;
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.multiple = true;
+    input.onchange = (e) => handleFiles((e.target as HTMLInputElement).files);
+    input.click();
+  };
+
   return (
     <div className={cn("space-y-3", className)}>
       <div
+        role="button"
+        tabIndex={0}
         onDragOver={(e) => {
           e.preventDefault();
           setIsDragging(true);
@@ -70,15 +82,12 @@ export function ImageUpload({
             : "border-muted-foreground/25 hover:border-primary/50",
           value.length >= maxImages && "opacity-50 cursor-not-allowed",
         )}
-        onClick={() => {
-          if (value.length >= maxImages) return;
-          const input = document.createElement("input");
-          input.type = "file";
-          input.accept = "image/*";
-          input.multiple = true;
-          input.onchange = (e) =>
-            handleFiles((e.target as HTMLInputElement).files);
-          input.click();
+        onClick={openFilePicker}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openFilePicker();
+          }
         }}
       >
         <Upload className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
@@ -93,7 +102,7 @@ export function ImageUpload({
       {value.length > 0 && (
         <div className="grid grid-cols-4 gap-2">
           {value.map((img, i) => (
-            <div key={i} className="relative group">
+            <div key={`img-${img.slice(-20)}`} className="relative group">
               <img
                 src={img}
                 alt={`Upload ${i + 1}`}

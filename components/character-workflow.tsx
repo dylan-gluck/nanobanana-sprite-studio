@@ -236,17 +236,13 @@ export function CharacterWorkflow() {
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                 {mode === "generate" ? "Generating..." : "Editing..."}
               </>
+            ) : mode === "generate" ? (
+              <>
+                <Sparkles className="h-4 w-4 mr-2" /> Generate
+              </>
             ) : (
               <>
-                {mode === "generate" ? (
-                  <>
-                    <Sparkles className="h-4 w-4 mr-2" /> Generate
-                  </>
-                ) : (
-                  <>
-                    <Pencil className="h-4 w-4 mr-2" /> Apply Edit
-                  </>
-                )}
+                <Pencil className="h-4 w-4 mr-2" /> Apply Edit
               </>
             )}
           </Button>

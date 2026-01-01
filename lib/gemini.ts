@@ -1,6 +1,6 @@
+import fs from "node:fs";
+import path from "node:path";
 import { GoogleGenAI } from "@google/genai";
-import fs from "fs";
-import path from "path";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 

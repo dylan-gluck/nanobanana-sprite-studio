@@ -131,7 +131,11 @@ export function SpriteWorkflow() {
                     max={16}
                     value={seq.frames}
                     onChange={(e) =>
-                      updateSequence(i, "frames", parseInt(e.target.value) || 1)
+                      updateSequence(
+                        i,
+                        "frames",
+                        parseInt(e.target.value, 10) || 1,
+                      )
                     }
                     className="w-20"
                     placeholder="Frames"
