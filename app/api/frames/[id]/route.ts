@@ -15,10 +15,7 @@ export async function DELETE(
     });
 
     if (!frame) {
-      return NextResponse.json(
-        { error: "Frame not found" },
-        { status: 404 },
-      );
+      return NextResponse.json({ error: "Frame not found" }, { status: 404 });
     }
 
     // Delete the frame
