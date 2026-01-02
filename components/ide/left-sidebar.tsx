@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import {
 	ChevronDown,
 	ChevronRight,
@@ -9,7 +10,6 @@ import {
 	Settings,
 	Sparkles,
 	Film,
-	Wand2,
 	PanelLeftClose,
 	Loader2,
 } from "lucide-react";
@@ -195,9 +195,13 @@ export function LeftSidebar() {
 			{/* Header */}
 			<div className="h-14 flex items-center justify-between px-4 border-b border-sidebar-border">
 				<div className="flex items-center gap-3">
-					<div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-sm">
-						<Wand2 className="w-4 h-4 text-primary-foreground" />
-					</div>
+					<Image
+						src="/logo.png"
+						alt="Megabananas"
+						width={32}
+						height={32}
+						className="w-8 h-8 rounded-lg"
+					/>
 					<span className="text-sm font-semibold text-sidebar-foreground tracking-tight">
 						megabananas
 					</span>
