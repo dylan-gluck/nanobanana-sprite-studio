@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NanoBanana Sprite Studio",
-  description: "Generate characters and sprite sheets using nanobanana",
+  title: "megabananas",
+  description: "Generate characters and animations using AI",
 };
 
 export default function RootLayout({

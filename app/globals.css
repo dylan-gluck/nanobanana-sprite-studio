@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   NanoBanana Sprite Studio — Dark SaaS Theme
+   megabananas — Dark SaaS Theme
    Inspired by: Linear, Raycast, Supabase
    ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -86,7 +86,7 @@
   --popover: oklch(0.18 0.008 275);
   --popover-foreground: oklch(0.93 0.01 260);
 
-  /* Primary — warm amber gold (NanoBanana signature) */
+  /* Primary — warm amber gold */
   --primary: oklch(0.78 0.16 75);
   --primary-foreground: oklch(0.15 0.02 60);
 

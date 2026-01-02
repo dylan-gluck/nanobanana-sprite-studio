@@ -47,10 +47,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-sidebar-foreground tracking-tight">
-              NanoBanana
-            </span>
-            <span className="text-[10px] text-muted-foreground uppercase tracking-widest">
-              Sprite Studio
+              megabananas
             </span>
           </div>
         </div>

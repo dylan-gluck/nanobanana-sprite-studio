@@ -1,6 +1,6 @@
-# NanoBanana Sprite Studio
+# megabananas
 
-Internal tool for generating and editing character images and sprite sheets using Gemini image models.
+Internal tool for generating and editing character images and animations using Gemini image models.
 
 ![Screenshot of v0](screenshot.png)
 

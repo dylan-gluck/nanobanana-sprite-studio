@@ -1,4 +1,4 @@
-## NanoBanana API Reference:
+## Gemini API Reference:
 
 Example from docs, "Use up to 14 reference images":
 ```
