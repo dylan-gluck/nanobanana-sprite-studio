@@ -10,6 +10,9 @@ import {
 	Loader2,
 	X,
 	Check,
+	ImagePlus,
+	Trash2,
+	Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -25,6 +28,7 @@ import {
 	type ProjectWithRelations,
 	type CharacterWithAssets,
 	type AnimationWithFrames,
+	type Asset,
 } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
@@ -37,6 +41,8 @@ export function ProjectView({ projectId }: ProjectViewProps) {
 	const { currentProject, openTab, setActionContext, refreshCurrentProject } = useAppStore();
 	const [project, setProject] = useState<ProjectWithRelations | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [references, setReferences] = useState<Asset[]>([]);
+	const [isUploadingRef, setIsUploadingRef] = useState(false);
 
 	useEffect(() => {
 		// Use current project if it matches, otherwise fetch
@@ -60,6 +66,72 @@ export function ProjectView({ projectId }: ProjectViewProps) {
 			console.error("Failed to fetch project:", error);
 		} finally {
 			setIsLoading(false);
+		}
+	};
+
+	const fetchReferences = async () => {
+		try {
+			const res = await fetch(`/api/projects/${projectId}/assets?type=reference`);
+			if (res.ok) {
+				const data = await res.json();
+				setReferences(data.assets || []);
+			}
+		} catch (error) {
+			console.error("Failed to fetch references:", error);
+		}
+	};
+
+	useEffect(() => {
+		fetchReferences();
+	}, [projectId]);
+
+	const handleReferenceUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		const files = e.target.files;
+		if (!files?.length) return;
+
+		setIsUploadingRef(true);
+		try {
+			for (const file of Array.from(files)) {
+				const reader = new FileReader();
+				const base64 = await new Promise<string>((resolve, reject) => {
+					reader.onload = () => resolve(reader.result as string);
+					reader.onerror = reject;
+					reader.readAsDataURL(file);
+				});
+
+				const res = await fetch(`/api/projects/${projectId}/references`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ image: base64, filename: file.name }),
+				});
+
+				if (!res.ok) throw new Error("Upload failed");
+			}
+			toast.success(`Uploaded ${files.length} reference${files.length > 1 ? "s" : ""}`);
+			fetchReferences();
+		} catch (error) {
+			console.error("Failed to upload reference:", error);
+			toast.error("Failed to upload reference");
+		} finally {
+			setIsUploadingRef(false);
+			e.target.value = "";
+		}
+	};
+
+	const handleDeleteReference = async (assetId: string) => {
+		try {
+			const res = await fetch(`/api/projects/${projectId}/references?assetId=${assetId}`, {
+				method: "DELETE",
+			});
+			if (res.ok) {
+				toast.success("Reference deleted");
+				setReferences((prev) => prev.filter((r) => r.id !== assetId));
+			} else {
+				toast.error("Failed to delete reference");
+			}
+		} catch (error) {
+			console.error("Failed to delete reference:", error);
+			toast.error("Failed to delete reference");
 		}
 	};
 
@@ -151,6 +223,86 @@ export function ProjectView({ projectId }: ProjectViewProps) {
 										}
 									}}
 								/>
+							))}
+						</div>
+					)}
+				</section>
+
+				{/* References Section */}
+				<section className="space-y-4">
+					<div className="flex items-center justify-between">
+						<h2 className="text-lg font-semibold flex items-center gap-2">
+							<ImagePlus className="h-5 w-5 text-primary" />
+							References
+						</h2>
+						<label>
+							<input
+								type="file"
+								accept="image/*"
+								multiple
+								className="hidden"
+								onChange={handleReferenceUpload}
+								disabled={isUploadingRef}
+							/>
+							<Button size="sm" asChild disabled={isUploadingRef}>
+								<span>
+									{isUploadingRef ? (
+										<Loader2 className="h-4 w-4 mr-1 animate-spin" />
+									) : (
+										<Upload className="h-4 w-4 mr-1" />
+									)}
+									Upload
+								</span>
+							</Button>
+						</label>
+					</div>
+
+					{references.length === 0 ? (
+						<div className="rounded-lg border border-dashed border-border bg-muted/30 p-8 text-center">
+							<div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mx-auto mb-3">
+								<ImagePlus className="h-6 w-6 text-muted-foreground" />
+							</div>
+							<h3 className="text-sm font-medium text-foreground mb-1">No reference images</h3>
+							<p className="text-sm text-muted-foreground mb-4">
+								Upload images to use as style references for character generation
+							</p>
+							<label>
+								<input
+									type="file"
+									accept="image/*"
+									multiple
+									className="hidden"
+									onChange={handleReferenceUpload}
+									disabled={isUploadingRef}
+								/>
+								<Button size="sm" variant="outline" asChild disabled={isUploadingRef}>
+									<span>
+										<Upload className="h-4 w-4 mr-1" />
+										Upload References
+									</span>
+								</Button>
+							</label>
+						</div>
+					) : (
+						<div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+							{references.map((ref) => (
+								<div
+									key={ref.id}
+									className="group relative aspect-square rounded-lg overflow-hidden border border-border bg-muted"
+								>
+									<img
+										src={ref.filePath}
+										alt="Reference"
+										className="w-full h-full object-cover"
+									/>
+									<button
+										type="button"
+										onClick={() => handleDeleteReference(ref.id)}
+										className="absolute top-1 right-1 p-1 rounded bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive hover:text-destructive-foreground"
+									>
+										<Trash2 className="h-3 w-3" />
+									</button>
+								</div>
 							))}
 						</div>
 					)}

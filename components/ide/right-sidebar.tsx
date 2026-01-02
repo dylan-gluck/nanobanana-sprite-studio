@@ -2,7 +2,6 @@
 
 import { PanelRightClose, X, Sparkles, Film, Wand2, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAppStore } from "@/lib/store";
 import { NewCharacterForm } from "./forms/new-character-form";
 import { NewAnimationForm } from "./forms/new-animation-form";
@@ -46,11 +45,9 @@ export function RightSidebar() {
 			</div>
 
 			{/* Content */}
-			<ScrollArea className="flex-1">
-				<div className="p-4">
-					<ActionContextContent />
-				</div>
-			</ScrollArea>
+			<div className="flex-1 min-h-0">
+				<ActionContextContent />
+			</div>
 		</div>
 	);
 }
@@ -115,14 +112,14 @@ function ActionContextContent() {
 			return <GenerateVariationForm character={actionContext.character} />;
 		case "edit-animation":
 			return (
-				<div className="text-sm text-muted-foreground">
+				<div className="p-4 text-sm text-muted-foreground">
 					<p>Animation editing form will be here.</p>
 					<p className="mt-2">Animation: {actionContext.animation.name}</p>
 				</div>
 			);
 		case "generate-frames":
 			return (
-				<div className="text-sm text-muted-foreground">
+				<div className="p-4 text-sm text-muted-foreground">
 					<p>Frame generation UI will be here.</p>
 					<p className="mt-2">Animation: {actionContext.animation.name}</p>
 				</div>
@@ -137,7 +134,7 @@ function EmptyActionState({ hasProject }: { hasProject: boolean }) {
 
 	if (!hasProject) {
 		return (
-			<div className="text-center py-8">
+			<div className="text-center py-8 px-4">
 				<div className="w-12 h-12 rounded-xl bg-muted/50 flex items-center justify-center mx-auto mb-3">
 					<Wand2 className="h-6 w-6 text-muted-foreground" />
 				</div>
@@ -149,7 +146,7 @@ function EmptyActionState({ hasProject }: { hasProject: boolean }) {
 	}
 
 	return (
-		<div className="space-y-3">
+		<div className="space-y-3 p-4">
 			<p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
 				Quick Actions
 			</p>

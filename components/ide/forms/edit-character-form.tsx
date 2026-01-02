@@ -62,70 +62,75 @@ export function EditCharacterForm({ character }: EditCharacterFormProps) {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="space-y-4">
-			{/* Preview */}
-			{character.primaryAsset && (
-				<div className="flex justify-center">
-					<div className="w-24 h-24 rounded-lg bg-muted border border-border overflow-hidden">
-						<img
-							src={character.primaryAsset.filePath}
-							alt={character.name}
-							className="w-full h-full object-cover"
-						/>
+		<form onSubmit={handleSubmit} className="h-full flex flex-col">
+			{/* Scrollable content */}
+			<div className="flex-1 overflow-y-auto p-4 space-y-4">
+				{/* Preview */}
+				{character.primaryAsset && (
+					<div className="flex justify-center">
+						<div className="w-24 h-24 rounded-lg bg-muted border border-border overflow-hidden">
+							<img
+								src={character.primaryAsset.filePath}
+								alt={character.name}
+								className="w-full h-full object-cover"
+							/>
+						</div>
 					</div>
+				)}
+
+				{/* Name */}
+				<div className="space-y-2">
+					<Label htmlFor="name">Name</Label>
+					<Input
+						id="name"
+						placeholder="Character name"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+						disabled={isLoading}
+					/>
 				</div>
-			)}
 
-			{/* Name */}
-			<div className="space-y-2">
-				<Label htmlFor="name">Name</Label>
-				<Input
-					id="name"
-					placeholder="Character name"
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-					disabled={isLoading}
-				/>
+				{/* Description */}
+				<div className="space-y-2">
+					<Label htmlFor="prompt">Description</Label>
+					<Textarea
+						id="prompt"
+						placeholder="Describe your character..."
+						value={prompt}
+						onChange={(e) => setPrompt(e.target.value)}
+						rows={4}
+						disabled={isLoading}
+					/>
+				</div>
 			</div>
 
-			{/* Description */}
-			<div className="space-y-2">
-				<Label htmlFor="prompt">Description</Label>
-				<Textarea
-					id="prompt"
-					placeholder="Describe your character..."
-					value={prompt}
-					onChange={(e) => setPrompt(e.target.value)}
-					rows={4}
-					disabled={isLoading}
-				/>
-			</div>
-
-			{/* Actions */}
-			<div className="flex gap-2 pt-2">
-				<Button
-					type="button"
-					variant="outline"
-					className="flex-1"
-					onClick={clearActionContext}
-					disabled={isLoading}
-				>
-					Cancel
-				</Button>
-				<Button
-					type="submit"
-					className="flex-1"
-					disabled={isLoading || !hasChanges}
-				>
-					{isLoading ? (
-						<>
-							<Loader2 className="h-4 w-4 mr-2 animate-spin" />
-							Saving...
-						</>
-					) : (
-						"Save Changes"
-					)}
-				</Button>
+			{/* Sticky footer */}
+			<div className="shrink-0 border-t border-border bg-sidebar p-4">
+				<div className="flex gap-2">
+					<Button
+						type="button"
+						variant="outline"
+						className="flex-1"
+						onClick={clearActionContext}
+						disabled={isLoading}
+					>
+						Cancel
+					</Button>
+					<Button
+						type="submit"
+						className="flex-1"
+						disabled={isLoading || !hasChanges}
+					>
+						{isLoading ? (
+							<>
+								<Loader2 className="h-4 w-4 mr-2 animate-spin" />
+								Saving...
+							</>
+						) : (
+							"Save Changes"
+						)}
+					</Button>
+				</div>
 			</div>
 		</form>
 	);

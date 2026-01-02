@@ -11,11 +11,15 @@ export interface Tab {
   label: string;
 }
 
+// Asset type enum
+export type AssetType = "reference" | "character" | "frame";
+
 // Base entity types (matching Prisma schema)
 export interface Asset {
   id: string;
   projectId: string;
   filePath: string;
+  type: AssetType;
   createdAt: Date;
   systemPrompt: string | null;
   userPrompt: string | null;

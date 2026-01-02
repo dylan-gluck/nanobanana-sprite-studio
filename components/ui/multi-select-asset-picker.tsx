@@ -13,6 +13,7 @@ type MultiSelectAssetPickerProps = {
 	onChange: (assetIds: string[]) => void;
 	className?: string;
 	disabled?: boolean;
+	assetType?: "reference" | "character" | "frame";
 };
 
 export function MultiSelectAssetPicker({
@@ -21,6 +22,7 @@ export function MultiSelectAssetPicker({
 	onChange,
 	className,
 	disabled = false,
+	assetType = "reference",
 }: MultiSelectAssetPickerProps) {
 	const [assets, setAssets] = useState<Asset[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -28,7 +30,8 @@ export function MultiSelectAssetPicker({
 	const fetchAssets = async () => {
 		setLoading(true);
 		try {
-			const res = await fetch(`/api/projects/${projectId}/assets`);
+			const url = `/api/projects/${projectId}/assets?type=${assetType}`;
+			const res = await fetch(url);
 			const data = await res.json();
 			setAssets(data.assets || []);
 		} catch (error) {

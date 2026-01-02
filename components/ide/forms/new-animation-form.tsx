@@ -13,6 +13,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { ReferenceImagePicker } from "@/components/ui/reference-image-picker";
 import { toast } from "sonner";
 import { useAppStore } from "@/lib/store";
 
@@ -30,6 +31,7 @@ export function NewAnimationForm({
 	const [description, setDescription] = useState("");
 	const [characterId, setCharacterId] = useState(initialCharacterId || "");
 	const [frameCount, setFrameCount] = useState("4");
+	const [selectedReferenceIds, setSelectedReferenceIds] = useState<string[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const characters = currentProject?.characters || [];
@@ -58,6 +60,7 @@ export function NewAnimationForm({
 					characterId,
 					description: description.trim() || null,
 					frameCount: parseInt(frameCount, 10),
+					referenceAssetIds: selectedReferenceIds,
 				}),
 			});
 
@@ -77,92 +80,109 @@ export function NewAnimationForm({
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="space-y-4">
-			<div className="space-y-2">
-				<Label htmlFor="character">Character</Label>
-				<Select value={characterId} onValueChange={setCharacterId}>
-					<SelectTrigger id="character" disabled={isLoading}>
-						<SelectValue placeholder="Select a character" />
-					</SelectTrigger>
-					<SelectContent>
-						{characters.length === 0 ? (
-							<SelectItem value="" disabled>
-								No characters available
-							</SelectItem>
-						) : (
-							characters.map((char) => (
-								<SelectItem key={char.id} value={char.id}>
-									{char.name}
+		<form onSubmit={handleSubmit} className="h-full flex flex-col">
+			{/* Scrollable content */}
+			<div className="flex-1 overflow-y-auto p-4 space-y-4">
+				<div className="space-y-2">
+					<Label htmlFor="character">Character</Label>
+					<Select value={characterId} onValueChange={setCharacterId}>
+						<SelectTrigger id="character" disabled={isLoading}>
+							<SelectValue placeholder="Select a character" />
+						</SelectTrigger>
+						<SelectContent>
+							{characters.length === 0 ? (
+								<SelectItem value="" disabled>
+									No characters available
 								</SelectItem>
-							))
+							) : (
+								characters.map((char) => (
+									<SelectItem key={char.id} value={char.id}>
+										{char.name}
+									</SelectItem>
+								))
+							)}
+						</SelectContent>
+					</Select>
+				</div>
+
+				<div className="space-y-2">
+					<Label htmlFor="name">Animation Name</Label>
+					<Input
+						id="name"
+						placeholder="e.g., Walk, Run, Attack"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+						disabled={isLoading}
+					/>
+				</div>
+
+				<div className="space-y-2">
+					<Label htmlFor="description">Description</Label>
+					<Textarea
+						id="description"
+						placeholder="Describe the animation sequence..."
+						value={description}
+						onChange={(e) => setDescription(e.target.value)}
+						rows={3}
+						disabled={isLoading}
+					/>
+				</div>
+
+				<div className="space-y-2">
+					<Label htmlFor="frameCount">Frame Count</Label>
+					<Select value={frameCount} onValueChange={setFrameCount}>
+						<SelectTrigger id="frameCount" disabled={isLoading}>
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{[2, 4, 6, 8, 10, 12].map((count) => (
+								<SelectItem key={count} value={String(count)}>
+									{count} frames
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+				</div>
+
+				{/* Reference Images */}
+				<div className="space-y-2 flex-1">
+					<Label>Reference Images</Label>
+					<ReferenceImagePicker
+						projectId={projectId}
+						value={selectedReferenceIds}
+						onChange={setSelectedReferenceIds}
+						disabled={isLoading}
+					/>
+				</div>
+			</div>
+
+			{/* Sticky footer */}
+			<div className="shrink-0 border-t border-border bg-sidebar p-4">
+				<div className="flex gap-2">
+					<Button
+						type="button"
+						variant="outline"
+						className="flex-1"
+						onClick={clearActionContext}
+						disabled={isLoading}
+					>
+						Cancel
+					</Button>
+					<Button
+						type="submit"
+						className="flex-1"
+						disabled={isLoading || characters.length === 0}
+					>
+						{isLoading ? (
+							<>
+								<Loader2 className="h-4 w-4 mr-2 animate-spin" />
+								Creating...
+							</>
+						) : (
+							"Create Animation"
 						)}
-					</SelectContent>
-				</Select>
-			</div>
-
-			<div className="space-y-2">
-				<Label htmlFor="name">Animation Name</Label>
-				<Input
-					id="name"
-					placeholder="e.g., Walk, Run, Attack"
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-					disabled={isLoading}
-				/>
-			</div>
-
-			<div className="space-y-2">
-				<Label htmlFor="description">Description</Label>
-				<Textarea
-					id="description"
-					placeholder="Describe the animation sequence..."
-					value={description}
-					onChange={(e) => setDescription(e.target.value)}
-					rows={3}
-					disabled={isLoading}
-				/>
-			</div>
-
-			<div className="space-y-2">
-				<Label htmlFor="frameCount">Frame Count</Label>
-				<Select value={frameCount} onValueChange={setFrameCount}>
-					<SelectTrigger id="frameCount" disabled={isLoading}>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{[2, 4, 6, 8, 10, 12].map((count) => (
-							<SelectItem key={count} value={String(count)}>
-								{count} frames
-							</SelectItem>
-						))}
-					</SelectContent>
-				</Select>
-			</div>
-
-			<div className="flex gap-2 pt-2">
-				<Button
-					type="button"
-					variant="outline"
-					className="flex-1"
-					onClick={clearActionContext}
-					disabled={isLoading}
-				>
-					Cancel
-				</Button>
-				<Button
-					type="submit"
-					className="flex-1"
-					disabled={isLoading || characters.length === 0}
-				>
-					{isLoading ? (
-						<>
-							<Loader2 className="h-4 w-4 mr-2 animate-spin" />
-							Creating...
-						</>
-					) : (
-						"Create Animation"
-					)}
-				</Button>
+					</Button>
+				</div>
 			</div>
 		</form>
 	);

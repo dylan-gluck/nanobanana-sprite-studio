@@ -10,6 +10,12 @@ datasource db {
   provider = "postgresql"
 }
 
+enum AssetType {
+  reference
+  character
+  frame
+}
+
 // Top-level container for all work
 model Project {
   id          String   @id @default(cuid())
@@ -29,10 +35,11 @@ model Project {
 
 // Unified storage for all images with provenance tracking
 model Asset {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   projectId String
   filePath  String
-  createdAt DateTime @default(now())
+  type      AssetType @default(character)
+  createdAt DateTime  @default(now())
 
   // Provenance fields
   systemPrompt      String?
