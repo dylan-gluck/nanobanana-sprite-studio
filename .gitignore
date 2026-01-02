@@ -42,3 +42,5 @@ next-env.d.ts
 
 # assets
 public/assets
+
+/lib/generated/prisma

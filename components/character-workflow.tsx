@@ -123,24 +123,26 @@ export function CharacterWorkflow() {
         {/* Mode Toggle */}
         <div className="panel p-1 inline-flex gap-1">
           <button
+            type="button"
             onClick={() => setMode("generate")}
             className={cn(
               "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
               mode === "generate"
                 ? "bg-primary text-primary-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
             )}
           >
             <Sparkles className="w-4 h-4" />
             Generate
           </button>
           <button
+            type="button"
             onClick={() => setMode("edit")}
             className={cn(
               "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
               mode === "edit"
                 ? "bg-primary text-primary-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
             )}
           >
             <Pencil className="w-4 h-4" />
@@ -297,7 +299,7 @@ export function CharacterWorkflow() {
             <div
               className={cn(
                 "aspect-square rounded-xl border-2 border-dashed border-border/50 flex flex-col items-center justify-center text-muted-foreground",
-                loading && "border-primary/30"
+                loading && "border-primary/30",
               )}
             >
               {loading ? (

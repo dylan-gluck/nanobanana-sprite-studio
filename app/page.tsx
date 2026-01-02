@@ -63,13 +63,14 @@ export default function Home() {
             const isActive = activeView === item.id;
             return (
               <button
+                type="button"
                 key={item.id}
                 onClick={() => setActiveView(item.id)}
                 className={cn(
                   "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-150",
                   isActive
                     ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm"
-                    : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50"
+                    : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50",
                 )}
               >
                 <div
@@ -77,7 +78,7 @@ export default function Home() {
                     "w-8 h-8 rounded-md flex items-center justify-center transition-colors",
                     isActive
                       ? "bg-primary/15 text-primary"
-                      : "bg-muted/50 text-muted-foreground"
+                      : "bg-muted/50 text-muted-foreground",
                   )}
                 >
                   <item.icon className="w-4 h-4" />
@@ -86,7 +87,7 @@ export default function Home() {
                   <div
                     className={cn(
                       "text-sm font-medium truncate",
-                      isActive && "text-sidebar-accent-foreground"
+                      isActive && "text-sidebar-accent-foreground",
                     )}
                   >
                     {item.label}
@@ -105,11 +106,17 @@ export default function Home() {
 
         {/* Bottom section */}
         <div className="p-3 border-t border-sidebar-border">
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors">
+          <button
+            type="button"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
+          >
             <FolderOpen className="w-4 h-4" />
             <span className="text-sm">Assets</span>
           </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors">
+          <button
+            type="button"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
+          >
             <Settings className="w-4 h-4" />
             <span className="text-sm">Settings</span>
           </button>

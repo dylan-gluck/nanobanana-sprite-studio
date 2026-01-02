@@ -52,7 +52,7 @@ export function SpriteWorkflow() {
   const updateSequence = (
     index: number,
     field: keyof Sequence,
-    value: string | number
+    value: string | number,
   ) => {
     const updated = [...sequences];
     updated[index] = { ...updated[index], [field]: value };
@@ -66,12 +66,10 @@ export function SpriteWorkflow() {
     }
 
     const validSequences = sequences.filter(
-      (s) => s.name.trim() && s.description.trim()
+      (s) => s.name.trim() && s.description.trim(),
     );
     if (validSequences.length === 0) {
-      toast.error(
-        "Please add at least one sequence with name and description"
-      );
+      toast.error("Please add at least one sequence with name and description");
       return;
     }
 
@@ -91,9 +89,7 @@ export function SpriteWorkflow() {
       setResult({ spriteGrid: data.spriteGrid, filename: data.filename });
       toast.success("Sprite sheet generated!");
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Generation failed"
-      );
+      toast.error(error instanceof Error ? error.message : "Generation failed");
     } finally {
       setLoading(false);
     }
@@ -101,7 +97,7 @@ export function SpriteWorkflow() {
 
   const totalFrames = sequences.reduce((sum, s) => sum + (s.frames || 0), 0);
   const validSequenceCount = sequences.filter(
-    (s) => s.name.trim() && s.description.trim()
+    (s) => s.name.trim() && s.description.trim(),
   ).length;
 
   return (
@@ -161,10 +157,14 @@ export function SpriteWorkflow() {
                   {/* Name and frame count row */}
                   <div className="flex gap-2">
                     <div className="flex-1">
-                      <label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1 block">
+                      <label
+                        htmlFor={`seq-name-${i}`}
+                        className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1 block"
+                      >
                         Animation Name
                       </label>
                       <Input
+                        id={`seq-name-${i}`}
                         placeholder="e.g., idle, walk, attack"
                         value={seq.name}
                         onChange={(e) =>
@@ -174,11 +174,15 @@ export function SpriteWorkflow() {
                       />
                     </div>
                     <div className="w-20">
-                      <label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1 flex items-center gap-1">
+                      <label
+                        htmlFor={`seq-frames-${i}`}
+                        className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1 flex items-center gap-1"
+                      >
                         <Hash className="w-2.5 h-2.5" />
                         Frames
                       </label>
                       <Input
+                        id={`seq-frames-${i}`}
                         type="number"
                         min={1}
                         max={16}
@@ -187,7 +191,7 @@ export function SpriteWorkflow() {
                           updateSequence(
                             i,
                             "frames",
-                            parseInt(e.target.value, 10) || 1
+                            parseInt(e.target.value, 10) || 1,
                           )
                         }
                         className="h-9 bg-background/50 border-border/50 text-sm text-center"
@@ -195,6 +199,7 @@ export function SpriteWorkflow() {
                     </div>
                     {sequences.length > 1 && (
                       <button
+                        type="button"
                         onClick={() => removeSequence(i)}
                         className="self-end h-9 w-9 flex items-center justify-center rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                       >
@@ -205,10 +210,14 @@ export function SpriteWorkflow() {
 
                   {/* Description */}
                   <div>
-                    <label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1 block">
+                    <label
+                      htmlFor={`seq-desc-${i}`}
+                      className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1 block"
+                    >
                       Description
                     </label>
                     <Textarea
+                      id={`seq-desc-${i}`}
                       placeholder="Describe the animation movement..."
                       value={seq.description}
                       onChange={(e) =>
@@ -245,9 +254,7 @@ export function SpriteWorkflow() {
           size="lg"
           className={cn(
             "w-full h-12 font-medium shadow-sm transition-all",
-            !loading &&
-              characterImage &&
-              "glow-primary-sm hover:glow-primary"
+            !loading && characterImage && "glow-primary-sm hover:glow-primary",
           )}
         >
           {loading ? (
@@ -290,7 +297,7 @@ export function SpriteWorkflow() {
             <div
               className={cn(
                 "aspect-video rounded-xl border-2 border-dashed border-border/50 flex flex-col items-center justify-center text-muted-foreground min-h-[300px]",
-                loading && "border-primary/30"
+                loading && "border-primary/30",
               )}
             >
               {loading ? (

@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, RefreshCw, ImageOff, FolderOpen } from "lucide-react";
+import { Check, RefreshCw, FolderOpen } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -65,7 +65,7 @@ export function AssetPicker({
       <div
         className={cn(
           "flex flex-col items-center justify-center h-36 text-muted-foreground rounded-xl bg-muted/20 border border-border/30",
-          className
+          className,
         )}
       >
         <RefreshCw className="w-5 h-5 animate-spin mb-2" />
@@ -79,7 +79,7 @@ export function AssetPicker({
       <div
         className={cn(
           "flex flex-col items-center justify-center h-36 text-muted-foreground rounded-xl bg-muted/20 border border-dashed border-border/50",
-          className
+          className,
         )}
       >
         <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center mb-2">
@@ -127,7 +127,7 @@ export function AssetPicker({
                   "group relative aspect-square rounded-lg overflow-hidden transition-all duration-150",
                   isSelected
                     ? "ring-2 ring-primary ring-offset-1 ring-offset-background scale-[0.98]"
-                    : "hover:ring-1 hover:ring-border"
+                    : "hover:ring-1 hover:ring-border",
                 )}
               >
                 <div className="absolute inset-0 checkerboard" />

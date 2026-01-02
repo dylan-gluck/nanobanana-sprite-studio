@@ -1,6 +1,6 @@
 "use client";
 
-import { Download, Save, Check, ExternalLink, ZoomIn } from "lucide-react";
+import { Download, Save, Check, ZoomIn } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -39,6 +39,7 @@ export function ImagePreview({
     <div className={cn("space-y-3", className)}>
       {/* Image container */}
       <div
+        role="group"
         className="group relative rounded-xl overflow-hidden border border-border/50 shadow-lg"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
@@ -57,7 +58,7 @@ export function ImagePreview({
         <div
           className={cn(
             "absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent flex flex-col justify-end p-3 transition-opacity duration-200",
-            isHovering ? "opacity-100" : "opacity-0"
+            isHovering ? "opacity-100" : "opacity-0",
           )}
         >
           <div className="flex items-center gap-2">
@@ -107,7 +108,11 @@ export function ImagePreview({
             size="sm"
             onClick={onSave}
             disabled={saved}
-            className={cn("flex-1 h-9", saved && "bg-emerald-500/10 text-emerald-500 border-emerald-500/20")}
+            className={cn(
+              "flex-1 h-9",
+              saved &&
+                "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
+            )}
           >
             {saved ? (
               <>

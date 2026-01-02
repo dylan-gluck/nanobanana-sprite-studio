@@ -1,6 +1,6 @@
 "use client";
 
-import { Upload, X, Image as ImageIcon } from "lucide-react";
+import { Upload, X } from "lucide-react";
 import { useCallback, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -37,7 +37,7 @@ export function ImageUpload({
         reader.readAsDataURL(file);
       });
     },
-    [value, onChange, maxImages]
+    [value, onChange, maxImages],
   );
 
   const handleDrop = useCallback(
@@ -46,7 +46,7 @@ export function ImageUpload({
       setIsDragging(false);
       handleFiles(e.dataTransfer.files);
     },
-    [handleFiles]
+    [handleFiles],
   );
 
   const removeImage = (index: number) => {
@@ -82,7 +82,7 @@ export function ImageUpload({
           isDragging
             ? "border-primary bg-primary/5 scale-[1.01]"
             : "border-border/50 hover:border-primary/40 hover:bg-muted/30",
-          isFull && "opacity-50 cursor-not-allowed pointer-events-none"
+          isFull && "opacity-50 cursor-not-allowed pointer-events-none",
         )}
         onClick={openFilePicker}
         onKeyDown={(e) => {
@@ -96,7 +96,9 @@ export function ImageUpload({
           <div
             className={cn(
               "w-10 h-10 rounded-xl flex items-center justify-center transition-colors",
-              isDragging ? "bg-primary/15 text-primary" : "bg-muted/50 text-muted-foreground"
+              isDragging
+                ? "bg-primary/15 text-primary"
+                : "bg-muted/50 text-muted-foreground",
             )}
           >
             <Upload className="w-5 h-5" />
@@ -104,10 +106,14 @@ export function ImageUpload({
           <div>
             <p className="text-sm text-muted-foreground">
               {isDragging ? (
-                <span className="text-primary font-medium">Drop images here</span>
+                <span className="text-primary font-medium">
+                  Drop images here
+                </span>
               ) : (
                 <>
-                  <span className="text-foreground font-medium">Click to upload</span>{" "}
+                  <span className="text-foreground font-medium">
+                    Click to upload
+                  </span>{" "}
                   or drag and drop
                 </>
               )}
