@@ -1,14 +1,14 @@
 "use client";
 
 import {
-  Layers,
-  Loader2,
-  Plus,
-  Trash2,
-  Play,
   ArrowRight,
   Film,
   Hash,
+  Layers,
+  Loader2,
+  Play,
+  Plus,
+  Trash2,
   User,
 } from "lucide-react";
 import { useState } from "react";
@@ -16,9 +16,9 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { AssetPicker } from "./asset-picker";
 import { ImagePreview } from "./image-preview";
-import { cn } from "@/lib/utils";
 
 type Sequence = {
   name: string;

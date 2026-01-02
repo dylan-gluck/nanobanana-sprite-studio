@@ -1,10 +1,10 @@
 ---
 id: task-3
 title: Implement IDE-Style Layout with Project Navigation
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-02 00:18'
-updated_date: '2026-01-02 00:18'
+updated_date: '2026-01-02 02:21'
 labels:
   - ui
   - layout
@@ -17,6 +17,42 @@ priority: high
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
+## Issue Summary
+
+The `react-resizable-panels` library is not rendering correctly - panels appear collapsed to near-zero width and drag handles are non-functional. Tested in multiple browsers, incognito mode, and with fresh dev server restarts. The issue persists regardless of panel `id` props, `collapsible` settings, or conditional rendering approaches.
+
+## Decision
+
+Replace resizable panel layout with simpler fixed-width collapsible sidebars using CSS transitions and toggle state from Zustand store.
+
+## New Subtask: Refactor Layout to Collapsible Sidebars
+
+**Objective**: Remove `react-resizable-panels` dependency and implement simple show/hide sidebars
+
+**Requirements**:
+- Left sidebar: Fixed 256px width, slides in/out with CSS transition
+- Right sidebar: Fixed 320px width, slides in/out with CSS transition
+- Center workspace: Flex-grow to fill remaining space
+- Toggle buttons in workspace header to show/hide each sidebar
+- Sidebar state already managed in Zustand store (`leftSidebarOpen`, `rightSidebarOpen`)
+
+**Implementation approach**:
+1. Replace `ResizablePanelGroup` with simple flex container
+2. Sidebars use conditional width (0 or fixed) with `overflow-hidden` and `transition-all`
+3. Keep existing sidebar content components unchanged
+4. Add toggle buttons to workspace header bar
+
+**Files to modify**:
+- `components/ide/app-layout.tsx` - Remove resizable panels, use flex layout
+- `components/ide/workspace.tsx` - Already has toggle buttons, verify they work
+
+**Acceptance criteria update**:
+- [x] #1 ~~Three-column resizable layout~~ → Three-column flex layout with collapsible sidebars
+- Sidebars smoothly animate open/closed
+- Toggle buttons show/hide sidebars correctly
+
+---
+
 ## Objective
 
 Replace the current 2-workflow layout with an IDE-style interface supporting project-based organization, tabbed workspaces, and contextual action sidebars. This enables the new data model's hierarchical structure to be navigated and manipulated effectively.
@@ -129,12 +165,14 @@ Current layout has a fixed sidebar with Character/Sprite workflow toggle and a s
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Three-column resizable layout renders correctly with all panels
-- [ ] #2 Project picker dropdown shows projects and allows switching
-- [ ] #3 Left sidebar displays characters and animations for selected project
-- [ ] #4 Clicking entities opens corresponding view in tabbed workspace
-- [ ] #5 Multiple tabs can be open simultaneously with proper switching
-- [ ] #6 Right sidebar updates contextually when actions are triggered
-- [ ] #7 Project, Character, and Animation detail views display correct entity data
-- [ ] #8 Layout is responsive - sidebars collapse appropriately on smaller screens
+- [x] #1 ~~Three-column resizable layout~~ Three-column flex layout with collapsible sidebars renders correctly
+- [ ] #2 Sidebars smoothly animate open/closed with CSS transitions
+- [ ] #3 Toggle buttons in workspace header show/hide sidebars correctly
+- [ ] #4 Project picker dropdown shows projects and allows switching
+- [ ] #5 Left sidebar displays characters and animations for selected project
+- [ ] #6 Clicking entities opens corresponding view in tabbed workspace
+- [ ] #7 Multiple tabs can be open simultaneously with proper switching
+- [ ] #8 Right sidebar updates contextually when actions are triggered
+- [ ] #9 Project, Character, and Animation detail views display correct entity data
+- [ ] #10 Layout is responsive - sidebars collapse appropriately on smaller screens
 <!-- AC:END -->

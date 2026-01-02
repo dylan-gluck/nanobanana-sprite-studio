@@ -1,13 +1,13 @@
 "use client";
 
 import {
+  ArrowRight,
+  ImagePlus,
   Loader2,
+  Maximize2,
   Pencil,
   Sparkles,
   Wand2,
-  ArrowRight,
-  ImagePlus,
-  Maximize2,
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -20,10 +20,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { AssetPicker } from "./asset-picker";
 import { ImagePreview } from "./image-preview";
 import { ImageUpload } from "./image-upload";
-import { cn } from "@/lib/utils";
 
 type Mode = "generate" | "edit";
 

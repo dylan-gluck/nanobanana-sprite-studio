@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, RefreshCw, FolderOpen } from "lucide-react";
+import { Check, FolderOpen, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
