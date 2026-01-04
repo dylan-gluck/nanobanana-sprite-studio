@@ -100,15 +100,6 @@ export function SpriteSheetView({ spriteSheetId }: SpriteSheetViewProps) {
     );
   }
 
-  const settings = spriteSheet.generationSettings as {
-    characterAssetId: string;
-    anglePreset?: string;
-    sequences: Array<{ name: string; description: string; frames: number }>;
-  } | null;
-
-  const totalFrames =
-    settings?.sequences?.reduce((sum, s) => sum + s.frames, 0) || 0;
-
   return (
     <ScrollArea className="h-full">
       <div className="p-6 max-w-5xl mx-auto space-y-6">
@@ -143,8 +134,6 @@ export function SpriteSheetView({ spriteSheetId }: SpriteSheetViewProps) {
                   addSuffix: true,
                 })}
               </span>
-              <span>{settings?.sequences?.length || 0} sequences</span>
-              <span>{totalFrames} frames</span>
             </div>
           </div>
           <div className="flex gap-2">
@@ -171,44 +160,6 @@ export function SpriteSheetView({ spriteSheetId }: SpriteSheetViewProps) {
             </div>
           </div>
         </section>
-
-        {/* Metadata */}
-        {settings?.sequences && settings.sequences.length > 0 && (
-          <section className="space-y-4">
-            <h2 className="text-lg font-semibold">Sequences</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {settings.sequences.map((seq, i) => (
-                <div
-                  key={i}
-                  className="rounded-lg border border-border bg-card p-4"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-medium">{seq.name}</h3>
-                    <span className="text-xs bg-muted px-2 py-1 rounded">
-                      {seq.frames} frames
-                    </span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    {seq.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Generation Settings */}
-        {settings?.anglePreset && (
-          <section className="space-y-2">
-            <h2 className="text-lg font-semibold">Generation Settings</h2>
-            <div className="rounded-lg border border-border bg-card p-4">
-              <p className="text-sm">
-                <span className="text-muted-foreground">Angle:</span>{" "}
-                {settings.anglePreset}
-              </p>
-            </div>
-          </section>
-        )}
       </div>
     </ScrollArea>
   );

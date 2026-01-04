@@ -13,6 +13,7 @@ export async function GET(
       include: {
         primaryAsset: true,
         assets: {
+          where: { type: { not: "spritesheet" } },
           orderBy: { createdAt: "desc" },
         },
         animations: {
@@ -23,6 +24,10 @@ export async function GET(
               include: { asset: true },
             },
           },
+        },
+        spriteSheets: {
+          orderBy: { updatedAt: "desc" },
+          include: { asset: true },
         },
         project: true,
       },

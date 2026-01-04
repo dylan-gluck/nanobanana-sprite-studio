@@ -5,22 +5,16 @@ import { characterPresets } from "@/lib/config/character-presets";
 import { editImage, type ImageContent } from "@/lib/gemini";
 import { prisma } from "@/lib/prisma";
 
-type Sequence = {
-  name: string;
-  description: string;
-  frames: number;
-};
-
 export async function POST(request: NextRequest) {
   try {
-    const { characterId, characterAssetId, name, sequences, anglePreset } =
+    const { characterId, characterAssetId, name, description, frameCount, anglePreset } =
       await request.json();
 
-    if (!characterId || !characterAssetId || !name || !sequences?.length) {
+    if (!characterId || !characterAssetId || !name || !description || !frameCount) {
       return NextResponse.json(
         {
           error:
-            "characterId, characterAssetId, name, and sequences are required",
+            "characterId, characterAssetId, name, description, and frameCount are required",
         },
         { status: 400 },
       );
@@ -62,15 +56,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Build sprite sheet prompt (v0 logic)
-    const sequenceDescriptions = (sequences as Sequence[])
-      .map((seq) => `- ${seq.name}: ${seq.description} (${seq.frames} frames)`)
-      .join("\n");
-
-    const totalFrames = (sequences as Sequence[]).reduce(
-      (sum, seq) => sum + seq.frames,
-      0,
-    );
-    const cols = Math.ceil(Math.sqrt(totalFrames));
+    const cols = Math.ceil(Math.sqrt(frameCount));
 
     // Get angle preset prompt fragment
     const angleOption = characterPresets.angles.find(
@@ -78,17 +64,17 @@ export async function POST(request: NextRequest) {
     );
     const angleFragment = angleOption ? `, ${angleOption.promptFragment}` : "";
 
-    const prompt = `Create a sprite sheet grid for this character with the following animation sequences:
+    const prompt = `Create a sprite sheet grid for this character with the following animation:
 
-${sequenceDescriptions}
+${description} (${frameCount} frames)
 
 Requirements:
-- Arrange all frames in a grid layout (approximately ${cols} columns)
+- Arrange all frames in a ${cols}x${cols} grid layout
 - Each frame should show the character in a clear pose for animation${angleFragment}
 - Maintain consistent character design across all frames
 - Use the same background color as the reference image
 - Keep frames evenly spaced for easy extraction
-- Total frames: ${totalFrames}`;
+- Total frames: ${frameCount}`;
 
     // Generate spritesheet
     const result = await editImage(source, prompt, [], {
@@ -126,7 +112,7 @@ Requirements:
         systemPrompt: prompt,
         userPrompt: name,
         referenceAssetIds: [characterAssetId],
-        generationSettings: { sequences, anglePreset, cols, totalFrames },
+        generationSettings: { description, frameCount, anglePreset, cols },
         characterId,
       },
     });
@@ -137,12 +123,13 @@ Requirements:
         name,
         characterId,
         projectId,
-        description: sequenceDescriptions,
+        description,
         assetId: asset.id,
         generationSettings: {
           characterAssetId,
           anglePreset,
-          sequences,
+          frameCount,
+          cols,
         },
       },
       include: {

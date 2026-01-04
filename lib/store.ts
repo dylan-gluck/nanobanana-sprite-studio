@@ -87,7 +87,8 @@ export interface SpriteSheet {
   generationSettings: {
     characterAssetId: string;
     anglePreset?: string;
-    sequences: Array<{ name: string; description: string; frames: number }>;
+    frameCount: number;
+    cols: number;
   } | null;
 }
 
@@ -105,6 +106,7 @@ export interface CharacterWithAssets extends Character {
   primaryAsset: Asset | null;
   assets: Asset[];
   animations: AnimationWithFrames[];
+  spriteSheets?: SpriteSheetWithAsset[];
 }
 
 export interface SpriteSheetWithAsset extends SpriteSheet {

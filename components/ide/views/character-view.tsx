@@ -10,6 +10,7 @@ import {
 	Loader2,
 	Image as ImageIcon,
 	Trash2,
+	Layers,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -30,6 +31,7 @@ import {
 	useAppStore,
 	type CharacterWithAssets,
 	type AnimationWithFrames,
+	type SpriteSheetWithAsset,
 	type Project,
 } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -369,6 +371,69 @@ export function CharacterView({ characterId }: CharacterViewProps) {
 						</div>
 					)}
 				</section>
+
+				{/* Sprite Sheets */}
+				<section className="space-y-4">
+					<div className="flex items-center justify-between">
+						<h2 className="text-lg font-semibold flex items-center gap-2">
+							<Layers className="h-5 w-5 text-primary" />
+							Sprite Sheets
+						</h2>
+						<Button
+							size="sm"
+							onClick={() =>
+								setActionContext({
+									type: "new-spritesheet",
+									projectId: character.projectId,
+									characterId: character.id,
+								})
+							}
+						>
+							<Plus className="h-4 w-4 mr-1" />
+							New Sprite Sheet
+						</Button>
+					</div>
+
+					{(!character.spriteSheets || character.spriteSheets.length === 0) ? (
+						<div className="rounded-lg border border-dashed border-border bg-muted/30 p-8 text-center">
+							<div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mx-auto mb-3">
+								<Layers className="h-6 w-6 text-muted-foreground" />
+							</div>
+							<h3 className="text-sm font-medium text-foreground mb-1">
+								No sprite sheets yet
+							</h3>
+							<p className="text-sm text-muted-foreground mb-4">
+								Generate a sprite sheet grid for this character
+							</p>
+							<Button
+								size="sm"
+								variant="outline"
+								onClick={() =>
+									setActionContext({
+										type: "new-spritesheet",
+										projectId: character.projectId,
+										characterId: character.id,
+									})
+								}
+							>
+								<Plus className="h-4 w-4 mr-1" />
+								Create Sprite Sheet
+							</Button>
+						</div>
+					) : (
+						<div className="space-y-2">
+							{character.spriteSheets.map((spriteSheet) => (
+								<SpriteSheetRow
+									key={spriteSheet.id}
+									spriteSheet={spriteSheet}
+									onClick={() =>
+										openTab("spritesheet", spriteSheet.id, spriteSheet.name)
+									}
+								/>
+							))}
+						</div>
+					)}
+				</section>
 			</div>
 		</ScrollArea>
 	);
@@ -417,6 +482,55 @@ function AnimationRow({
 			</div>
 			<div className="text-sm text-muted-foreground">
 				{animation.frames.length} frames
+			</div>
+		</div>
+	);
+}
+
+function SpriteSheetRow({
+	spriteSheet,
+	onClick,
+}: {
+	spriteSheet: SpriteSheetWithAsset;
+	onClick: () => void;
+}) {
+	const thumbnailPath = spriteSheet.asset?.filePath;
+	const frameCount = spriteSheet.generationSettings?.frameCount ?? 0;
+
+	return (
+		<div
+			className={cn(
+				"flex items-center gap-4 p-3 rounded-lg border border-border bg-card cursor-pointer",
+				"hover:border-primary/50 hover:shadow-sm transition-all",
+			)}
+			onClick={onClick}
+			onKeyDown={(e) => {
+				if (e.key === "Enter" || e.key === " ") onClick();
+			}}
+		>
+			<div className="w-12 h-12 rounded bg-muted flex-shrink-0 overflow-hidden">
+				{thumbnailPath ? (
+					<img
+						src={thumbnailPath}
+						alt={spriteSheet.name}
+						className="w-full h-full object-cover"
+					/>
+				) : (
+					<div className="w-full h-full flex items-center justify-center">
+						<Layers className="h-5 w-5 text-muted-foreground" />
+					</div>
+				)}
+			</div>
+			<div className="flex-1 min-w-0">
+				<h3 className="font-medium text-sm">{spriteSheet.name}</h3>
+				{spriteSheet.description && (
+					<p className="text-xs text-muted-foreground truncate">
+						{spriteSheet.description}
+					</p>
+				)}
+			</div>
+			<div className="text-sm text-muted-foreground">
+				{frameCount} frames
 			</div>
 		</div>
 	);
