@@ -2,9 +2,9 @@
   "metadata": {
     "version": 1,
     "root": "/Users/dylan/Workspace/vibe/megabananas",
-    "createdAt": "2026-01-02T19:44:36.024Z",
-    "updatedAt": "2026-01-02T19:44:36.024Z",
-    "totalFiles": 101
+    "createdAt": "2026-01-04T21:07:10.058Z",
+    "updatedAt": "2026-01-04T21:07:10.058Z",
+    "totalFiles": 107
   },
   "tree": {
     "name": "megabananas",
@@ -26,6 +26,16 @@
                     "name": "[id]",
                     "type": "dir",
                     "children": [
+                      {
+                        "name": "reorder",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "route.ts",
+                            "type": "file"
+                          }
+                        ]
+                      },
                       {
                         "name": "route.ts",
                         "type": "file"
@@ -135,6 +145,16 @@
                 ]
               },
               {
+                "name": "gen-spritesheet",
+                "type": "dir",
+                "children": [
+                  {
+                    "name": "route.ts",
+                    "type": "file"
+                  }
+                ]
+              },
+              {
                 "name": "projects",
                 "type": "dir",
                 "children": [
@@ -162,6 +182,26 @@
                           }
                         ]
                       },
+                      {
+                        "name": "route.ts",
+                        "type": "file"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "route.ts",
+                    "type": "file"
+                  }
+                ]
+              },
+              {
+                "name": "spritesheets",
+                "type": "dir",
+                "children": [
+                  {
+                    "name": "[id]",
+                    "type": "dir",
+                    "children": [
                       {
                         "name": "route.ts",
                         "type": "file"
@@ -221,6 +261,10 @@
                   {
                     "name": "new-frame-form.tsx",
                     "type": "file"
+                  },
+                  {
+                    "name": "new-spritesheet-form.tsx",
+                    "type": "file"
                   }
                 ]
               },
@@ -242,6 +286,10 @@
                   },
                   {
                     "name": "project-view.tsx",
+                    "type": "file"
+                  },
+                  {
+                    "name": "spritesheet-view.tsx",
                     "type": "file"
                   }
                 ]
@@ -573,6 +621,7 @@
     ]
   },
   "nodes": [
+    "app/api/animations/[id]/reorder/route.ts",
     "app/api/animations/[id]/route.ts",
     "app/api/animations/route.ts",
     "app/api/assets/[id]/route.ts",
@@ -584,10 +633,13 @@
     "app/api/gen-animation/route.ts",
     "app/api/gen-character/route.ts",
     "app/api/gen-sprite/route.ts",
+    "app/api/gen-spritesheet/route.ts",
     "app/api/projects/[id]/assets/route.ts",
     "app/api/projects/[id]/references/route.ts",
     "app/api/projects/[id]/route.ts",
     "app/api/projects/route.ts",
+    "app/api/spritesheets/[id]/route.ts",
+    "app/api/spritesheets/route.ts",
     "app/layout.tsx",
     "app/page.tsx",
     "components/asset-picker.tsx",
@@ -599,12 +651,14 @@
     "components/ide/forms/new-animation-form.tsx",
     "components/ide/forms/new-character-form.tsx",
     "components/ide/forms/new-frame-form.tsx",
+    "components/ide/forms/new-spritesheet-form.tsx",
     "components/ide/left-sidebar.tsx",
     "components/ide/right-sidebar.tsx",
     "components/ide/views/animation-view.tsx",
     "components/ide/views/asset-view.tsx",
     "components/ide/views/character-view.tsx",
     "components/ide/views/project-view.tsx",
+    "components/ide/views/spritesheet-view.tsx",
     "components/ide/workspace.tsx",
     "components/image-preview.tsx",
     "components/image-upload.tsx",
@@ -725,6 +779,10 @@
       "to": "components/ide/forms/new-frame-form.tsx"
     },
     {
+      "from": "components/ide/right-sidebar.tsx",
+      "to": "components/ide/forms/new-spritesheet-form.tsx"
+    },
+    {
       "from": "components/ide/workspace.tsx",
       "to": "components/ide/views/animation-view.tsx"
     },
@@ -741,6 +799,10 @@
       "to": "components/ide/views/project-view.tsx"
     },
     {
+      "from": "components/ide/workspace.tsx",
+      "to": "components/ide/views/spritesheet-view.tsx"
+    },
+    {
       "from": "components/sprite-workflow.tsx",
       "to": "components/asset-picker.tsx"
     },
@@ -754,6 +816,44 @@
     }
   ],
   "files": {
+    "app/api/animations/[id]/reorder/route.ts": {
+      "imports": [
+        {
+          "from": "next/server",
+          "kind": "import",
+          "imported": [
+            "NextResponse"
+          ]
+        },
+        {
+          "from": "@/lib/prisma",
+          "kind": "import",
+          "imported": [
+            "prisma"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "POST",
+          "params": [
+            {
+              "name": "request",
+              "type": "Request"
+            },
+            {
+              "name": "unknown",
+              "type": "{ params: Promise<{ id: string }> }"
+            }
+          ],
+          "isAsync": true,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
     "app/api/animations/[id]/route.ts": {
       "imports": [
         {
@@ -1318,6 +1418,66 @@
       "classes": [],
       "constants": []
     },
+    "app/api/gen-spritesheet/route.ts": {
+      "imports": [
+        {
+          "from": "node:fs",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "node:path",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "next/server",
+          "kind": "import",
+          "imported": [
+            "NextRequest",
+            "NextResponse"
+          ]
+        },
+        {
+          "from": "@/lib/config/character-presets",
+          "kind": "import",
+          "imported": [
+            "characterPresets"
+          ]
+        },
+        {
+          "from": "@/lib/gemini",
+          "kind": "import",
+          "imported": [
+            "editImage",
+            "ImageContent"
+          ]
+        },
+        {
+          "from": "@/lib/prisma",
+          "kind": "import",
+          "imported": [
+            "prisma"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "POST",
+          "params": [
+            {
+              "name": "request",
+              "type": "NextRequest"
+            }
+          ],
+          "isAsync": true,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
     "app/api/projects/[id]/assets/route.ts": {
       "imports": [
         {
@@ -1520,6 +1680,108 @@
           "isAsync": true,
           "isExported": true
         },
+        {
+          "name": "POST",
+          "params": [
+            {
+              "name": "request",
+              "type": "Request"
+            }
+          ],
+          "isAsync": true,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "app/api/spritesheets/[id]/route.ts": {
+      "imports": [
+        {
+          "from": "next/server",
+          "kind": "import",
+          "imported": [
+            "NextResponse"
+          ]
+        },
+        {
+          "from": "@/lib/prisma",
+          "kind": "import",
+          "imported": [
+            "prisma"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "GET",
+          "params": [
+            {
+              "name": "_request",
+              "type": "Request"
+            },
+            {
+              "name": "unknown",
+              "type": "{ params: Promise<{ id: string }> }"
+            }
+          ],
+          "isAsync": true,
+          "isExported": true
+        },
+        {
+          "name": "PATCH",
+          "params": [
+            {
+              "name": "request",
+              "type": "Request"
+            },
+            {
+              "name": "unknown",
+              "type": "{ params: Promise<{ id: string }> }"
+            }
+          ],
+          "isAsync": true,
+          "isExported": true
+        },
+        {
+          "name": "DELETE",
+          "params": [
+            {
+              "name": "_request",
+              "type": "Request"
+            },
+            {
+              "name": "unknown",
+              "type": "{ params: Promise<{ id: string }> }"
+            }
+          ],
+          "isAsync": true,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "app/api/spritesheets/route.ts": {
+      "imports": [
+        {
+          "from": "next/server",
+          "kind": "import",
+          "imported": [
+            "NextResponse"
+          ]
+        },
+        {
+          "from": "@/lib/prisma",
+          "kind": "import",
+          "imported": [
+            "prisma"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
         {
           "name": "POST",
           "params": [
@@ -1868,7 +2130,8 @@
             "Settings",
             "ImageIcon",
             "Download",
-            "Trash2"
+            "Trash2",
+            "Copy"
           ]
         },
         {
@@ -2409,6 +2672,118 @@
       "classes": [],
       "constants": []
     },
+    "components/ide/forms/new-spritesheet-form.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "useState"
+          ]
+        },
+        {
+          "from": "lucide-react",
+          "kind": "import",
+          "imported": [
+            "Loader2",
+            "Plus",
+            "Trash2",
+            "Play",
+            "Layers"
+          ]
+        },
+        {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/components/ui/input",
+          "kind": "import",
+          "imported": [
+            "Input"
+          ]
+        },
+        {
+          "from": "@/components/ui/label",
+          "kind": "import",
+          "imported": [
+            "Label"
+          ]
+        },
+        {
+          "from": "@/components/ui/textarea",
+          "kind": "import",
+          "imported": [
+            "Textarea"
+          ]
+        },
+        {
+          "from": "@/components/ui/select",
+          "kind": "import",
+          "imported": [
+            "Select",
+            "SelectContent",
+            "SelectItem",
+            "SelectTrigger",
+            "SelectValue"
+          ]
+        },
+        {
+          "from": "sonner",
+          "kind": "import",
+          "imported": [
+            "toast"
+          ]
+        },
+        {
+          "from": "@/lib/store",
+          "kind": "import",
+          "imported": [
+            "useAppStore"
+          ]
+        },
+        {
+          "from": "@/lib/config/character-presets",
+          "kind": "import",
+          "imported": [
+            "characterPresets"
+          ]
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "NewSpriteSheetForm",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "NewSpriteSheetFormProps"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": [
+        {
+          "name": "defaultSequence",
+          "initKind": "object",
+          "isExported": false,
+          "type": "Sequence"
+        }
+      ]
+    },
     "components/ide/left-sidebar.tsx": {
       "imports": [
         {
@@ -2437,6 +2812,7 @@
             "Settings",
             "Sparkles",
             "Film",
+            "Layers",
             "PanelLeftClose",
             "Loader2"
           ]
@@ -2519,7 +2895,8 @@
           "imported": [
             "useAppStore",
             "CharacterWithAssets",
-            "AnimationWithFrames"
+            "AnimationWithFrames",
+            "SpriteSheetWithAsset"
           ]
         },
         {
@@ -2552,6 +2929,7 @@
             "X",
             "Sparkles",
             "Film",
+            "Layers",
             "Wand2",
             "Copy",
             "ImageIcon"
@@ -2583,6 +2961,13 @@
           "kind": "import",
           "imported": [
             "NewAnimationForm"
+          ]
+        },
+        {
+          "from": "./forms/new-spritesheet-form",
+          "kind": "import",
+          "imported": [
+            "NewSpriteSheetForm"
           ]
         },
         {
@@ -2620,7 +3005,8 @@
         "components/ide/forms/generate-variation-form.tsx",
         "components/ide/forms/new-animation-form.tsx",
         "components/ide/forms/new-character-form.tsx",
-        "components/ide/forms/new-frame-form.tsx"
+        "components/ide/forms/new-frame-form.tsx",
+        "components/ide/forms/new-spritesheet-form.tsx"
       ],
       "functions": [
         {
@@ -2674,6 +3060,37 @@
           ]
         },
         {
+          "from": "@dnd-kit/core",
+          "kind": "import",
+          "imported": [
+            "DndContext",
+            "closestCenter",
+            "KeyboardSensor",
+            "PointerSensor",
+            "useSensor",
+            "useSensors",
+            "DragEndEvent"
+          ]
+        },
+        {
+          "from": "@dnd-kit/sortable",
+          "kind": "import",
+          "imported": [
+            "arrayMove",
+            "SortableContext",
+            "sortableKeyboardCoordinates",
+            "useSortable",
+            "rectSortingStrategy"
+          ]
+        },
+        {
+          "from": "@dnd-kit/utilities",
+          "kind": "import",
+          "imported": [
+            "CSS"
+          ]
+        },
+        {
           "from": "lucide-react",
           "kind": "import",
           "imported": [
@@ -2681,7 +3098,7 @@
             "Play",
             "Pause",
             "Plus",
-            "Edit",
+            "Download",
             "Calendar",
             "Loader2",
             "RotateCcw",
@@ -2690,7 +3107,8 @@
             "ChevronRight",
             "X",
             "Check",
-            "AlertCircle"
+            "AlertCircle",
+            "GripVertical"
           ]
         },
         {
@@ -2734,6 +3152,13 @@
           ]
         },
         {
+          "from": "@/components/ui/asset-thumbnail",
+          "kind": "import",
+          "imported": [
+            "AssetThumbnail"
+          ]
+        },
+        {
           "from": "@/lib/utils",
           "kind": "import",
           "imported": [
@@ -2762,11 +3187,11 @@
           "isExported": true
         },
         {
-          "name": "FrameCard",
+          "name": "SortableFrame",
           "params": [
             {
               "name": "unknown",
-              "type": "{\n  frame: FrameWithAsset;\n  index: number;\n  isActive: boolean;\n  onClick: () => void;\n  onDelete: () => Promise<void>;\n}"
+              "type": "SortableFrameProps"
             }
           ],
           "isAsync": false,
@@ -3074,6 +3499,83 @@
       "classes": [],
       "constants": []
     },
+    "components/ide/views/spritesheet-view.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "useEffect",
+            "useState"
+          ]
+        },
+        {
+          "from": "lucide-react",
+          "kind": "import",
+          "imported": [
+            "Download",
+            "Calendar",
+            "Loader2",
+            "Trash2"
+          ]
+        },
+        {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/components/ui/scroll-area",
+          "kind": "import",
+          "imported": [
+            "ScrollArea"
+          ]
+        },
+        {
+          "from": "sonner",
+          "kind": "import",
+          "imported": [
+            "toast"
+          ]
+        },
+        {
+          "from": "@/lib/store",
+          "kind": "import",
+          "imported": [
+            "useAppStore",
+            "SpriteSheetWithAsset",
+            "Character",
+            "Project",
+            "Asset"
+          ]
+        },
+        {
+          "from": "date-fns",
+          "kind": "import",
+          "imported": [
+            "formatDistanceToNow"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "SpriteSheetView",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "SpriteSheetViewProps"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
     "components/ide/workspace.tsx": {
       "imports": [
         {
@@ -3084,6 +3586,7 @@
             "FolderOpen",
             "Sparkles",
             "Film",
+            "Layers",
             "PanelLeft",
             "PanelRight",
             "ImageIcon"
@@ -3146,13 +3649,21 @@
           "imported": [
             "AssetView"
           ]
+        },
+        {
+          "from": "./views/spritesheet-view",
+          "kind": "import",
+          "imported": [
+            "SpriteSheetView"
+          ]
         }
       ],
       "dependencies": [
         "components/ide/views/animation-view.tsx",
         "components/ide/views/asset-view.tsx",
         "components/ide/views/character-view.tsx",
-        "components/ide/views/project-view.tsx"
+        "components/ide/views/project-view.tsx",
+        "components/ide/views/spritesheet-view.tsx"
       ],
       "functions": [
         {
@@ -8616,7 +9127,7 @@
           "returnType": "string"
         },
         {
-          "name": "getPositionContext",
+          "name": "getMotionProgressContext",
           "params": [
             {
               "name": "frameIndex",

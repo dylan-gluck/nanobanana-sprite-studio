@@ -14,6 +14,7 @@ enum AssetType {
   reference
   character
   frame
+  spritesheet
 }
 
 // Top-level container for all work
@@ -26,9 +27,10 @@ model Project {
   updatedAt   DateTime @updatedAt
 
   // Relations
-  assets     Asset[]
-  characters Character[]
-  animations Animation[]
+  assets       Asset[]
+  characters   Character[]
+  animations   Animation[]
+  spriteSheets SpriteSheet[]
 
   @@index([name])
 }
@@ -58,6 +60,9 @@ model Asset {
   // Frame relation
   frame Frame?
 
+  // SpriteSheet relation
+  spriteSheet SpriteSheet? @relation("SpriteSheetAsset")
+
   @@index([projectId])
   @@index([characterId])
 }
@@ -76,9 +81,10 @@ model Character {
   primaryAsset   Asset?  @relation("CharacterPrimaryAsset", fields: [primaryAssetId], references: [id], onDelete: SetNull)
 
   // Relations
-  project    Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  assets     Asset[]     @relation("CharacterAssets") // Variation assets
-  animations Animation[]
+  project      Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assets       Asset[]       @relation("CharacterAssets") // Variation assets
+  animations   Animation[]
+  spriteSheets SpriteSheet[]
 
   @@unique([projectId, name])
   @@index([projectId])
@@ -122,4 +128,30 @@ model Frame {
 
   @@unique([animationId, frameIndex])
   @@index([animationId])
+}
+
+// Sprite sheet containing all animation frames in a grid
+model SpriteSheet {
+  id          String   @id @default(cuid())
+  projectId   String
+  characterId String
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Asset reference (the generated sprite sheet image)
+  assetId String @unique
+  asset   Asset  @relation("SpriteSheetAsset", fields: [assetId], references: [id], onDelete: Cascade)
+
+  // Generation config (characterAssetId, anglePreset, sequences array)
+  generationSettings Json?
+
+  // Relations
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  @@unique([characterId, name])
+  @@index([projectId])
+  @@index([characterId])
 }

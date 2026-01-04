@@ -37,6 +37,13 @@ export async function GET(
             },
           },
         },
+        spriteSheets: {
+          orderBy: { updatedAt: "desc" },
+          include: {
+            asset: true,
+            character: true,
+          },
+        },
       },
     });
 

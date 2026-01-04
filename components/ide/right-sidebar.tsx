@@ -1,10 +1,11 @@
 "use client";
 
-import { PanelRightClose, X, Sparkles, Film, Wand2, Copy, Image as ImageIcon } from "lucide-react";
+import { PanelRightClose, X, Sparkles, Film, Layers, Wand2, Copy, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/lib/store";
 import { NewCharacterForm } from "./forms/new-character-form";
 import { NewAnimationForm } from "./forms/new-animation-form";
+import { NewSpriteSheetForm } from "./forms/new-spritesheet-form";
 import { EditCharacterForm } from "./forms/edit-character-form";
 import { GenerateVariationForm } from "./forms/generate-variation-form";
 import { NewFrameForm } from "./forms/new-frame-form";
@@ -69,6 +70,8 @@ function ActionContextIcon() {
 		case "edit-animation":
 		case "new-frame":
 			return <Film className={iconClass} />;
+		case "new-spritesheet":
+			return <Layers className={iconClass} />;
 		case "view-asset":
 			return <ImageIcon className={iconClass} />;
 		default:
@@ -88,6 +91,8 @@ function ActionContextTitle() {
 			return `Variation: ${actionContext.character.name}`;
 		case "new-animation":
 			return "New Animation";
+		case "new-spritesheet":
+			return "New Sprite Sheet";
 		case "edit-animation":
 			return `Edit ${actionContext.animation.name}`;
 		case "new-frame":
@@ -108,6 +113,13 @@ function ActionContextContent() {
 		case "new-animation":
 			return (
 				<NewAnimationForm
+					projectId={actionContext.projectId}
+					characterId={actionContext.characterId}
+				/>
+			);
+		case "new-spritesheet":
+			return (
+				<NewSpriteSheetForm
 					projectId={actionContext.projectId}
 					characterId={actionContext.characterId}
 				/>
@@ -194,6 +206,28 @@ function EmptyActionState({ hasProject }: { hasProject: boolean }) {
 						<div className="text-sm font-medium">New Animation</div>
 						<div className="text-xs text-muted-foreground">
 							Create animation sequence
+						</div>
+					</div>
+				</Button>
+
+				<Button
+					variant="outline"
+					className="w-full justify-start h-12"
+					onClick={() =>
+						currentProject &&
+						setActionContext({
+							type: "new-spritesheet",
+							projectId: currentProject.id,
+						})
+					}
+				>
+					<div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center mr-3">
+						<Layers className="h-4 w-4 text-primary" />
+					</div>
+					<div className="text-left">
+						<div className="text-sm font-medium">New Sprite Sheet</div>
+						<div className="text-xs text-muted-foreground">
+							Generate sprite grid
 						</div>
 					</div>
 				</Button>

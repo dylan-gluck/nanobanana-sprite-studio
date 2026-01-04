@@ -2,7 +2,12 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 // Tab types for the workspace
-export type TabType = "project" | "character" | "animation" | "asset";
+export type TabType =
+  | "project"
+  | "character"
+  | "animation"
+  | "asset"
+  | "spritesheet";
 
 export interface Tab {
   id: string;
@@ -12,7 +17,7 @@ export interface Tab {
 }
 
 // Asset type enum
-export type AssetType = "reference" | "character" | "frame";
+export type AssetType = "reference" | "character" | "frame" | "spritesheet";
 
 // Base entity types (matching Prisma schema)
 export interface Asset {
@@ -70,6 +75,22 @@ export interface Frame {
   createdAt: Date;
 }
 
+export interface SpriteSheet {
+  id: string;
+  projectId: string;
+  characterId: string;
+  name: string;
+  description: string | null;
+  assetId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  generationSettings: {
+    characterAssetId: string;
+    anglePreset?: string;
+    sequences: Array<{ name: string; description: string; frames: number }>;
+  } | null;
+}
+
 // Extended types with relations
 export interface FrameWithAsset extends Frame {
   asset: Asset;
@@ -86,9 +107,15 @@ export interface CharacterWithAssets extends Character {
   animations: AnimationWithFrames[];
 }
 
+export interface SpriteSheetWithAsset extends SpriteSheet {
+  asset: Asset;
+  character: Character;
+}
+
 export interface ProjectWithRelations extends Project {
   characters: CharacterWithAssets[];
   animations: AnimationWithFrames[];
+  spriteSheets: SpriteSheetWithAsset[];
 }
 
 // Extended animation type with character's primary asset and variations for generation
@@ -101,6 +128,7 @@ export type ActionContext =
   | { type: "none" }
   | { type: "new-character"; projectId: string }
   | { type: "new-animation"; projectId: string; characterId?: string }
+  | { type: "new-spritesheet"; projectId: string; characterId?: string }
   | { type: "edit-character"; character: CharacterWithAssets }
   | { type: "edit-animation"; animation: AnimationWithFrames }
   | { type: "new-frame"; animation: AnimationWithCharacterAsset }

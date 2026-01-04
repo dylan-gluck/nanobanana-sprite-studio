@@ -11,6 +11,7 @@ import {
 	Settings,
 	Sparkles,
 	Film,
+	Layers,
 	PanelLeftClose,
 	Loader2,
 } from "lucide-react";
@@ -42,6 +43,7 @@ import {
 	useAppStore,
 	type CharacterWithAssets,
 	type AnimationWithFrames,
+	type SpriteSheetWithAsset,
 } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
@@ -71,6 +73,7 @@ export function LeftSidebar() {
 	const [projects, setProjects] = useState<ProjectListItem[]>([]);
 	const [charactersOpen, setCharactersOpen] = useState(true);
 	const [animationsOpen, setAnimationsOpen] = useState(true);
+	const [spriteSheetsOpen, setSpriteSheetsOpen] = useState(true);
 	const [isLoadingProjects, setIsLoadingProjects] = useState(true);
 	const [newProjectOpen, setNewProjectOpen] = useState(false);
 	const [newProjectName, setNewProjectName] = useState("");
@@ -148,6 +151,16 @@ export function LeftSidebar() {
 	const handleNewAnimation = () => {
 		if (currentProject) {
 			setActionContext({ type: "new-animation", projectId: currentProject.id });
+		}
+	};
+
+	const handleSpriteSheetClick = (spriteSheet: SpriteSheetWithAsset) => {
+		openTab("spritesheet", spriteSheet.id, spriteSheet.name);
+	};
+
+	const handleNewSpriteSheet = () => {
+		if (currentProject) {
+			setActionContext({ type: "new-spritesheet", projectId: currentProject.id });
 		}
 	};
 
@@ -455,6 +468,63 @@ export function LeftSidebar() {
 									size="sm"
 									className="w-full justify-start h-8 px-2 text-sm text-muted-foreground"
 									onClick={handleNewAnimation}
+								>
+									<Plus className="h-3 w-3 mr-2" />
+									New
+								</Button>
+							</div>
+						</CollapsibleContent>
+					</Collapsible>
+
+					{/* Sprite Sheets Section */}
+					<Collapsible open={spriteSheetsOpen} onOpenChange={setSpriteSheetsOpen}>
+						<div className="flex items-center justify-between">
+							<CollapsibleTrigger asChild>
+								<Button
+									variant="ghost"
+									size="sm"
+									className="w-full justify-start gap-2 px-2"
+								>
+									{spriteSheetsOpen ? (
+										<ChevronDown className="h-4 w-4" />
+									) : (
+										<ChevronRight className="h-4 w-4" />
+									)}
+									<Layers className="h-4 w-4 text-primary" />
+									<span className="flex-1 text-left text-sm font-medium">
+										Sprite Sheets
+									</span>
+									<span className="text-xs text-muted-foreground">
+										{currentProject?.spriteSheets?.length || 0}
+									</span>
+								</Button>
+							</CollapsibleTrigger>
+						</div>
+						<CollapsibleContent className="pt-1">
+							<div className="ml-4 pl-2 border-l border-sidebar-border space-y-0.5">
+								{currentProject?.spriteSheets?.map((spriteSheet) => (
+									<Button
+										key={spriteSheet.id}
+										variant="ghost"
+										size="sm"
+										className="w-full justify-start h-8 px-2 text-sm font-normal"
+										onClick={() => handleSpriteSheetClick(spriteSheet)}
+									>
+										<Layers className="h-4 w-4 mr-2 text-muted-foreground" />
+										<span className="truncate flex-1 text-left">{spriteSheet.name}</span>
+									</Button>
+								))}
+								{(!currentProject ||
+									currentProject.spriteSheets?.length === 0) && (
+									<p className="text-xs text-muted-foreground px-2 py-1">
+										No sprite sheets yet
+									</p>
+								)}
+								<Button
+									variant="ghost"
+									size="sm"
+									className="w-full justify-start h-8 px-2 text-sm text-muted-foreground"
+									onClick={handleNewSpriteSheet}
 								>
 									<Plus className="h-3 w-3 mr-2" />
 									New
