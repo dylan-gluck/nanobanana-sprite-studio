@@ -2,8 +2,8 @@
   "metadata": {
     "version": 1,
     "root": "/Users/dylan/Workspace/vibe/megabananas",
-    "createdAt": "2026-01-05T05:05:43.805Z",
-    "updatedAt": "2026-01-05T05:05:43.805Z",
+    "createdAt": "2026-01-05T05:15:29.169Z",
+    "updatedAt": "2026-01-05T05:15:29.169Z",
     "totalFiles": 108
   },
   "tree": {
@@ -2974,7 +2974,6 @@
             "Sparkles",
             "Film",
             "Layers",
-            "Wand2",
             "Copy",
             "ImageIcon"
           ]
@@ -3074,17 +3073,6 @@
         {
           "name": "ActionContextContent",
           "params": [],
-          "isAsync": false,
-          "isExported": false
-        },
-        {
-          "name": "EmptyActionState",
-          "params": [
-            {
-              "name": "unknown",
-              "type": "{ hasProject: boolean }"
-            }
-          ],
           "isAsync": false,
           "isExported": false
         }

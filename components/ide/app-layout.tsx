@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 // Fixed sidebar widths per task-3 spec
 const LEFT_SIDEBAR_WIDTH = 256;
-const RIGHT_SIDEBAR_WIDTH = 320;
+const RIGHT_SIDEBAR_WIDTH = 400;
 
 export function AppLayout() {
   const { leftSidebarOpen, rightSidebarOpen } = useAppStore();

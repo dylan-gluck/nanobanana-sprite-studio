@@ -30,6 +30,7 @@ export function Workspace() {
 		rightSidebarOpen,
 		toggleLeftSidebar,
 		toggleRightSidebar,
+		actionContext,
 	} = useAppStore();
 
 	const activeTab = tabs.find((t) => t.id === activeTabId);
@@ -100,8 +101,8 @@ export function Workspace() {
 					<ScrollBar orientation="horizontal" />
 				</ScrollArea>
 
-				{/* Right sidebar toggle */}
-				{!rightSidebarOpen && (
+				{/* Right sidebar toggle - only show when there's an action context */}
+				{!rightSidebarOpen && actionContext.type !== "none" && (
 					<Button
 						variant="ghost"
 						size="icon"

@@ -1,9 +1,10 @@
 ---
 id: task-14
 title: Refactor right sidebar collapse state
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-05 05:09'
+updated_date: '2026-01-05 05:12'
 labels:
   - refactor
   - ui
@@ -20,13 +21,13 @@ Refactor the global layout and right sidebar collapse behavior. The Quick Action
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Right sidebar is collapsed by default on app load
-- [ ] #2 Quick Actions empty state component is removed entirely
-- [ ] #3 Sidebar auto-opens when action context is set (new character, asset details, etc)
-- [ ] #4 Sidebar auto-closes when action context is cleared (cancel, complete, X button)
-- [ ] #5 rightSidebarOpen is no longer persisted to localStorage
-- [ ] #6 Right sidebar width increased from 320px to 400px when expanded
-- [ ] #7 Toggle button in workspace header only visible when action context exists
+- [x] #1 Right sidebar is collapsed by default on app load
+- [x] #2 Quick Actions empty state component is removed entirely
+- [x] #3 Sidebar auto-opens when action context is set (new character, asset details, etc)
+- [x] #4 Sidebar auto-closes when action context is cleared (cancel, complete, X button)
+- [x] #5 rightSidebarOpen is no longer persisted to localStorage
+- [x] #6 Right sidebar width increased from 320px to 400px when expanded
+- [x] #7 Toggle button in workspace header only visible when action context exists
 <!-- AC:END -->
 
 ## Implementation Plan

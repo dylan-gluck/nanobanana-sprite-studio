@@ -189,7 +189,7 @@ export const useAppStore = create<AppState>()(
       tabs: [],
       activeTabId: null,
       leftSidebarOpen: true,
-      rightSidebarOpen: true,
+      rightSidebarOpen: false,
       actionContext: { type: "none" },
       isLoadingProject: false,
 
@@ -288,7 +288,8 @@ export const useAppStore = create<AppState>()(
       // Action context
       setActionContext: (context) =>
         set({ actionContext: context, rightSidebarOpen: true }),
-      clearActionContext: () => set({ actionContext: { type: "none" } }),
+      clearActionContext: () =>
+        set({ actionContext: { type: "none" }, rightSidebarOpen: false }),
 
       setIsLoadingProject: (loading) => set({ isLoadingProject: loading }),
     }),
@@ -299,7 +300,6 @@ export const useAppStore = create<AppState>()(
         tabs: state.tabs,
         activeTabId: state.activeTabId,
         leftSidebarOpen: state.leftSidebarOpen,
-        rightSidebarOpen: state.rightSidebarOpen,
       }),
     },
   ),

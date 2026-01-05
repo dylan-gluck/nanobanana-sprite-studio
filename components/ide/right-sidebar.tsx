@@ -1,6 +1,6 @@
 "use client";
 
-import { PanelRightClose, X, Sparkles, Film, Layers, Wand2, Copy, Image as ImageIcon } from "lucide-react";
+import { PanelRightClose, X, Sparkles, Film, Layers, Copy, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/lib/store";
 import { NewCharacterForm } from "./forms/new-character-form";
@@ -75,7 +75,7 @@ function ActionContextIcon() {
 		case "view-asset":
 			return <ImageIcon className={iconClass} />;
 		default:
-			return <Wand2 className={iconClass} />;
+			return null;
 	}
 }
 
@@ -100,7 +100,7 @@ function ActionContextTitle() {
 		case "view-asset":
 			return "Asset Details";
 		default:
-			return "Actions";
+			return "";
 	}
 }
 
@@ -140,98 +140,6 @@ function ActionContextContent() {
 		case "new-frame":
 			return <NewFrameForm animation={actionContext.animation} />;
 		default:
-			return <EmptyActionState hasProject={!!currentProject} />;
+			return null;
 	}
-}
-
-function EmptyActionState({ hasProject }: { hasProject: boolean }) {
-	const { setActionContext, currentProject } = useAppStore();
-
-	if (!hasProject) {
-		return (
-			<div className="text-center py-8 px-4">
-				<div className="w-12 h-12 rounded-xl bg-muted/50 flex items-center justify-center mx-auto mb-3">
-					<Wand2 className="h-6 w-6 text-muted-foreground" />
-				</div>
-				<p className="text-sm text-muted-foreground">
-					Select a project to get started
-				</p>
-			</div>
-		);
-	}
-
-	return (
-		<div className="space-y-3 p-4">
-			<p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
-				Quick Actions
-			</p>
-			<div className="space-y-2">
-				<Button
-					variant="outline"
-					className="w-full justify-start h-12"
-					onClick={() =>
-						currentProject &&
-						setActionContext({
-							type: "new-character",
-							projectId: currentProject.id,
-						})
-					}
-				>
-					<div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center mr-3">
-						<Sparkles className="h-4 w-4 text-primary" />
-					</div>
-					<div className="text-left">
-						<div className="text-sm font-medium">New Character</div>
-						<div className="text-xs text-muted-foreground">
-							Generate a character
-						</div>
-					</div>
-				</Button>
-
-				<Button
-					variant="outline"
-					className="w-full justify-start h-12"
-					onClick={() =>
-						currentProject &&
-						setActionContext({
-							type: "new-animation",
-							projectId: currentProject.id,
-						})
-					}
-				>
-					<div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center mr-3">
-						<Film className="h-4 w-4 text-primary" />
-					</div>
-					<div className="text-left">
-						<div className="text-sm font-medium">New Animation</div>
-						<div className="text-xs text-muted-foreground">
-							Create animation sequence
-						</div>
-					</div>
-				</Button>
-
-				<Button
-					variant="outline"
-					className="w-full justify-start h-12"
-					onClick={() =>
-						currentProject &&
-						setActionContext({
-							type: "new-spritesheet",
-							projectId: currentProject.id,
-						})
-					}
-				>
-					<div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center mr-3">
-						<Layers className="h-4 w-4 text-primary" />
-					</div>
-					<div className="text-left">
-						<div className="text-sm font-medium">New Sprite Sheet</div>
-						<div className="text-xs text-muted-foreground">
-							Generate sprite grid
-						</div>
-					</div>
-				</Button>
-			</div>
-		</div>
-	);
 }
