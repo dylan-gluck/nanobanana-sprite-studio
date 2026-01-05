@@ -204,6 +204,7 @@ export const useAppStore = create<AppState>()(
 // Re-export types from central types module for backwards compatibility
 export type {
   Asset,
+  AssetType,
   Project,
   Character,
   Animation,
@@ -218,4 +219,3 @@ export type {
   AnimationGenerationSettings,
   SpriteSheetGenerationSettings,
 } from "@/lib/types";
-export { AssetType } from "@/lib/types";

@@ -2,9 +2,9 @@
   "metadata": {
     "version": 1,
     "root": "/Users/dylan/Workspace/vibe/megabananas",
-    "createdAt": "2026-01-05T05:36:25.372Z",
-    "updatedAt": "2026-01-05T05:36:25.372Z",
-    "totalFiles": 109
+    "createdAt": "2026-01-05T05:49:07.653Z",
+    "updatedAt": "2026-01-05T05:49:07.653Z",
+    "totalFiles": 114
   },
   "tree": {
     "name": "megabananas",
@@ -583,6 +583,16 @@
         "type": "dir",
         "children": [
           {
+            "name": "api",
+            "type": "dir",
+            "children": [
+              {
+                "name": "response.ts",
+                "type": "file"
+              }
+            ]
+          },
+          {
             "name": "config",
             "type": "dir",
             "children": [
@@ -595,6 +605,34 @@
                 "type": "file"
               }
             ]
+          },
+          {
+            "name": "db",
+            "type": "dir",
+            "children": [
+              {
+                "name": "includes.ts",
+                "type": "file"
+              }
+            ]
+          },
+          {
+            "name": "types",
+            "type": "dir",
+            "children": [
+              {
+                "name": "api.ts",
+                "type": "file"
+              },
+              {
+                "name": "index.ts",
+                "type": "file"
+              }
+            ]
+          },
+          {
+            "name": "file-utils.ts",
+            "type": "file"
           },
           {
             "name": "gemini.ts",
@@ -729,12 +767,17 @@
     "components/ui/toggle.tsx",
     "components/ui/tooltip.tsx",
     "hooks/use-mobile.ts",
+    "lib/api/response.ts",
     "lib/config/animation-prompts.ts",
     "lib/config/character-presets.ts",
+    "lib/db/includes.ts",
+    "lib/file-utils.ts",
     "lib/gemini.ts",
     "lib/image-utils.ts",
     "lib/prisma.ts",
     "lib/store.ts",
+    "lib/types/api.ts",
+    "lib/types/index.ts",
     "lib/utils.ts",
     "next.config.ts",
     "prisma.config.ts"
@@ -833,10 +876,12 @@
     "app/api/animations/[id]/reorder/route.ts": {
       "imports": [
         {
-          "from": "next/server",
+          "from": "@/lib/api/response",
           "kind": "import",
           "imported": [
-            "NextResponse"
+            "badRequest",
+            "jsonSuccess",
+            "serverError"
           ]
         },
         {
@@ -871,10 +916,20 @@
     "app/api/animations/[id]/route.ts": {
       "imports": [
         {
-          "from": "next/server",
+          "from": "@/lib/api/response",
           "kind": "import",
           "imported": [
-            "NextResponse"
+            "jsonSuccess",
+            "notFound",
+            "serverError"
+          ]
+        },
+        {
+          "from": "@/lib/db/includes",
+          "kind": "import",
+          "imported": [
+            "animationWithCharacterAssets",
+            "animationWithFrames"
           ]
         },
         {
@@ -939,10 +994,20 @@
     "app/api/animations/route.ts": {
       "imports": [
         {
-          "from": "next/server",
+          "from": "@/lib/api/response",
           "kind": "import",
           "imported": [
-            "NextResponse"
+            "badRequest",
+            "jsonCreated",
+            "notFound",
+            "serverError"
+          ]
+        },
+        {
+          "from": "@/lib/db/includes",
+          "kind": "import",
+          "imported": [
+            "animationWithFrames"
           ]
         },
         {
@@ -976,8 +1041,16 @@
           "from": "next/server",
           "kind": "import",
           "imported": [
-            "NextRequest",
-            "NextResponse"
+            "NextRequest"
+          ]
+        },
+        {
+          "from": "@/lib/api/response",
+          "kind": "import",
+          "imported": [
+            "jsonSuccess",
+            "notFound",
+            "serverError"
           ]
         },
         {
@@ -994,7 +1067,7 @@
           "name": "GET",
           "params": [
             {
-              "name": "request",
+              "name": "_request",
               "type": "NextRequest"
             },
             {
@@ -1009,7 +1082,7 @@
           "name": "DELETE",
           "params": [
             {
-              "name": "request",
+              "name": "_request",
               "type": "NextRequest"
             },
             {
@@ -1040,8 +1113,16 @@
           "from": "next/server",
           "kind": "import",
           "imported": [
-            "NextRequest",
-            "NextResponse"
+            "NextRequest"
+          ]
+        },
+        {
+          "from": "@/lib/api/response",
+          "kind": "import",
+          "imported": [
+            "badRequest",
+            "jsonSuccess",
+            "serverError"
           ]
         },
         {
@@ -1089,10 +1170,20 @@
     "app/api/characters/[id]/route.ts": {
       "imports": [
         {
-          "from": "next/server",
+          "from": "@/lib/api/response",
           "kind": "import",
           "imported": [
-            "NextResponse"
+            "jsonSuccess",
+            "notFound",
+            "serverError"
+          ]
+        },
+        {
+          "from": "@/lib/db/includes",
+          "kind": "import",
+          "imported": [
+            "characterWithDetails",
+            "characterWithPrimaryAsset"
           ]
         },
         {
@@ -1157,10 +1248,19 @@
     "app/api/characters/route.ts": {
       "imports": [
         {
-          "from": "next/server",
+          "from": "@/lib/api/response",
           "kind": "import",
           "imported": [
-            "NextResponse"
+            "badRequest",
+            "jsonCreated",
+            "serverError"
+          ]
+        },
+        {
+          "from": "@/lib/db/includes",
+          "kind": "import",
+          "imported": [
+            "characterWithPrimaryAsset"
           ]
         },
         {
@@ -1194,8 +1294,23 @@
           "from": "next/server",
           "kind": "import",
           "imported": [
-            "NextRequest",
-            "NextResponse"
+            "NextRequest"
+          ]
+        },
+        {
+          "from": "@/lib/api/response",
+          "kind": "import",
+          "imported": [
+            "badRequest",
+            "jsonSuccess",
+            "serverError"
+          ]
+        },
+        {
+          "from": "@/lib/file-utils",
+          "kind": "import",
+          "imported": [
+            "saveImageToAssets"
           ]
         },
         {
@@ -1203,8 +1318,7 @@
           "kind": "import",
           "imported": [
             "editImage",
-            "ImageContent",
-            "saveImageToFile"
+            "ImageContent"
           ]
         }
       ],
@@ -1228,10 +1342,12 @@
     "app/api/frames/[id]/route.ts": {
       "imports": [
         {
-          "from": "next/server",
+          "from": "@/lib/api/response",
           "kind": "import",
           "imported": [
-            "NextResponse"
+            "jsonSuccess",
+            "notFound",
+            "serverError"
           ]
         },
         {
@@ -1266,11 +1382,6 @@
     "app/api/gen-animation/route.ts": {
       "imports": [
         {
-          "from": "node:fs",
-          "kind": "import",
-          "isDefault": true
-        },
-        {
           "from": "node:path",
           "kind": "import",
           "isDefault": true
@@ -1290,6 +1401,16 @@
           ]
         },
         {
+          "from": "@/lib/file-utils",
+          "kind": "import",
+          "imported": [
+            "ensureDirectoryExists",
+            "loadImageAsBase64",
+            "sanitizeFilename",
+            "saveBase64Image"
+          ]
+        },
+        {
           "from": "@/lib/gemini",
           "kind": "import",
           "imported": [
@@ -1303,46 +1424,18 @@
           "imported": [
             "prisma"
           ]
+        },
+        {
+          "from": "@/lib/types/api",
+          "kind": "import",
+          "imported": [
+            "GenerateAnimationRequest",
+            "SSEEvent"
+          ]
         }
       ],
       "dependencies": [],
       "functions": [
-        {
-          "name": "loadImageAsBase64",
-          "params": [
-            {
-              "name": "filePath",
-              "type": "string"
-            }
-          ],
-          "isAsync": true,
-          "isExported": false,
-          "returnType": "Promise<string>"
-        },
-        {
-          "name": "ensureDirectoryExists",
-          "params": [
-            {
-              "name": "dirPath",
-              "type": "string"
-            }
-          ],
-          "isAsync": false,
-          "isExported": false,
-          "returnType": "void"
-        },
-        {
-          "name": "sanitizeFilename",
-          "params": [
-            {
-              "name": "name",
-              "type": "string"
-            }
-          ],
-          "isAsync": false,
-          "isExported": false,
-          "returnType": "string"
-        },
         {
           "name": "POST",
           "params": [
@@ -1364,8 +1457,23 @@
           "from": "next/server",
           "kind": "import",
           "imported": [
-            "NextRequest",
-            "NextResponse"
+            "NextRequest"
+          ]
+        },
+        {
+          "from": "@/lib/api/response",
+          "kind": "import",
+          "imported": [
+            "badRequest",
+            "jsonSuccess",
+            "serverError"
+          ]
+        },
+        {
+          "from": "@/lib/file-utils",
+          "kind": "import",
+          "imported": [
+            "saveImageToAssets"
           ]
         },
         {
@@ -1373,8 +1481,7 @@
           "kind": "import",
           "imported": [
             "generateImage",
-            "ImageContent",
-            "saveImageToFile"
+            "ImageContent"
           ]
         }
       ],
@@ -1401,8 +1508,23 @@
           "from": "next/server",
           "kind": "import",
           "imported": [
-            "NextRequest",
-            "NextResponse"
+            "NextRequest"
+          ]
+        },
+        {
+          "from": "@/lib/api/response",
+          "kind": "import",
+          "imported": [
+            "badRequest",
+            "jsonSuccess",
+            "serverError"
+          ]
+        },
+        {
+          "from": "@/lib/file-utils",
+          "kind": "import",
+          "imported": [
+            "saveImageToAssets"
           ]
         },
         {
@@ -1410,8 +1532,7 @@
           "kind": "import",
           "imported": [
             "editImage",
-            "ImageContent",
-            "saveImageToFile"
+            "ImageContent"
           ]
         }
       ],
@@ -1435,11 +1556,6 @@
     "app/api/gen-spritesheet/route.ts": {
       "imports": [
         {
-          "from": "node:fs",
-          "kind": "import",
-          "isDefault": true
-        },
-        {
           "from": "node:path",
           "kind": "import",
           "isDefault": true
@@ -1448,8 +1564,17 @@
           "from": "next/server",
           "kind": "import",
           "imported": [
-            "NextRequest",
-            "NextResponse"
+            "NextRequest"
+          ]
+        },
+        {
+          "from": "@/lib/api/response",
+          "kind": "import",
+          "imported": [
+            "badRequest",
+            "jsonSuccess",
+            "notFound",
+            "serverError"
           ]
         },
         {
@@ -1457,6 +1582,16 @@
           "kind": "import",
           "imported": [
             "characterPresets"
+          ]
+        },
+        {
+          "from": "@/lib/file-utils",
+          "kind": "import",
+          "imported": [
+            "ensureDirectoryExists",
+            "loadImageAsBase64",
+            "saveBase64Image",
+            "sanitizeFilename"
           ]
         },
         {
@@ -1472,6 +1607,13 @@
           "kind": "import",
           "imported": [
             "prisma"
+          ]
+        },
+        {
+          "from": "@/lib/db/includes",
+          "kind": "import",
+          "imported": [
+            "spriteSheetWithAsset"
           ]
         }
       ],
@@ -1531,14 +1673,15 @@
     "app/api/projects/[id]/assets/route.ts": {
       "imports": [
         {
-          "from": "next/server",
+          "from": "@/lib/api/response",
           "kind": "import",
           "imported": [
-            "NextResponse"
+            "jsonSuccess",
+            "serverError"
           ]
         },
         {
-          "from": "@/lib/generated/prisma/enums",
+          "from": "@/lib/types",
           "kind": "import",
           "imported": [
             "AssetType"
@@ -1589,8 +1732,25 @@
           "from": "next/server",
           "kind": "import",
           "imported": [
-            "NextRequest",
-            "NextResponse"
+            "NextRequest"
+          ]
+        },
+        {
+          "from": "@/lib/api/response",
+          "kind": "import",
+          "imported": [
+            "badRequest",
+            "jsonSuccess",
+            "notFound",
+            "serverError"
+          ]
+        },
+        {
+          "from": "@/lib/file-utils",
+          "kind": "import",
+          "imported": [
+            "ensureDirectoryExists",
+            "saveBase64Image"
           ]
         },
         {
@@ -1640,10 +1800,19 @@
     "app/api/projects/[id]/route.ts": {
       "imports": [
         {
-          "from": "next/server",
+          "from": "@/lib/api/response",
           "kind": "import",
           "imported": [
-            "NextResponse"
+            "jsonSuccess",
+            "notFound",
+            "serverError"
+          ]
+        },
+        {
+          "from": "@/lib/db/includes",
+          "kind": "import",
+          "imported": [
+            "projectWithRelations"
           ]
         },
         {
@@ -1708,10 +1877,13 @@
     "app/api/projects/route.ts": {
       "imports": [
         {
-          "from": "next/server",
+          "from": "@/lib/api/response",
           "kind": "import",
           "imported": [
-            "NextResponse"
+            "badRequest",
+            "jsonCreated",
+            "jsonSuccess",
+            "serverError"
           ]
         },
         {
@@ -1748,10 +1920,20 @@
     "app/api/spritesheets/[id]/route.ts": {
       "imports": [
         {
-          "from": "next/server",
+          "from": "@/lib/api/response",
           "kind": "import",
           "imported": [
-            "NextResponse"
+            "jsonSuccess",
+            "notFound",
+            "serverError"
+          ]
+        },
+        {
+          "from": "@/lib/db/includes",
+          "kind": "import",
+          "imported": [
+            "characterWithPrimaryAsset",
+            "spriteSheetWithAsset"
           ]
         },
         {
@@ -1816,10 +1998,20 @@
     "app/api/spritesheets/route.ts": {
       "imports": [
         {
-          "from": "next/server",
+          "from": "@/lib/api/response",
           "kind": "import",
           "imported": [
-            "NextResponse"
+            "badRequest",
+            "jsonCreated",
+            "notFound",
+            "serverError"
+          ]
+        },
+        {
+          "from": "@/lib/db/includes",
+          "kind": "import",
+          "imported": [
+            "spriteSheetWithAsset"
           ]
         },
         {
@@ -9242,6 +9434,98 @@
         }
       ]
     },
+    "lib/api/response.ts": {
+      "imports": [
+        {
+          "from": "next/server",
+          "kind": "import",
+          "imported": [
+            "NextResponse"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "jsonSuccess",
+          "params": [
+            {
+              "name": "data",
+              "type": "T"
+            },
+            {
+              "name": "status"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "jsonCreated",
+          "params": [
+            {
+              "name": "data",
+              "type": "T"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "jsonError",
+          "params": [
+            {
+              "name": "message",
+              "type": "string"
+            },
+            {
+              "name": "status"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "badRequest",
+          "params": [
+            {
+              "name": "message",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "notFound",
+          "params": [
+            {
+              "name": "entity",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "serverError",
+          "params": [
+            {
+              "name": "error",
+              "type": "unknown"
+            },
+            {
+              "name": "context",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
     "lib/config/animation-prompts.ts": {
       "imports": [
         {
@@ -9341,7 +9625,68 @@
         }
       ]
     },
-    "lib/gemini.ts": {
+    "lib/db/includes.ts": {
+      "imports": [
+        {
+          "from": "@/lib/generated/prisma/client",
+          "kind": "import",
+          "imported": [
+            "Prisma"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "frameWithAsset",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "animationWithFrames",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "spriteSheetWithAsset",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "characterWithPrimaryAsset",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "characterWithAssetsNoSpritesheets",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "characterWithAssets",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "characterWithDetails",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "projectWithRelations",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "animationWithCharacterAssets",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
+    "lib/file-utils.ts": {
       "imports": [
         {
           "from": "node:fs",
@@ -9352,7 +9697,119 @@
           "from": "node:path",
           "kind": "import",
           "isDefault": true
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "ensureDirectoryExists",
+          "params": [
+            {
+              "name": "dirPath",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "void"
         },
+        {
+          "name": "loadImageAsBase64",
+          "params": [
+            {
+              "name": "filePath",
+              "type": "string"
+            }
+          ],
+          "isAsync": true,
+          "isExported": true,
+          "returnType": "Promise<string>"
+        },
+        {
+          "name": "sanitizeFilename",
+          "params": [
+            {
+              "name": "name",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "string"
+        },
+        {
+          "name": "generateTimestampedFilename",
+          "params": [
+            {
+              "name": "prefix",
+              "type": "string"
+            },
+            {
+              "name": "extension"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "string"
+        },
+        {
+          "name": "saveBase64Image",
+          "params": [
+            {
+              "name": "base64Data",
+              "type": "string"
+            },
+            {
+              "name": "directory",
+              "type": "string"
+            },
+            {
+              "name": "filename",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "string"
+        },
+        {
+          "name": "saveImageToAssets",
+          "params": [
+            {
+              "name": "base64Data",
+              "type": "string"
+            },
+            {
+              "name": "folder",
+              "type": "string"
+            },
+            {
+              "name": "prefix",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "string"
+        },
+        {
+          "name": "getAssetFullPath",
+          "params": [
+            {
+              "name": "assetPath",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "string"
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "lib/gemini.ts": {
+      "imports": [
         {
           "from": "@google/genai",
           "kind": "import",
@@ -9406,26 +9863,6 @@
           "isAsync": true,
           "isExported": true,
           "returnType": "Promise<{ image: string; text?: string }>"
-        },
-        {
-          "name": "saveImageToFile",
-          "params": [
-            {
-              "name": "base64Data",
-              "type": "string"
-            },
-            {
-              "name": "folder",
-              "type": "string"
-            },
-            {
-              "name": "prefix",
-              "type": "string"
-            }
-          ],
-          "isAsync": false,
-          "isExported": true,
-          "returnType": "string"
         }
       ],
       "classes": [],
@@ -9575,6 +10012,44 @@
           "imported": [
             "persist"
           ]
+        },
+        {
+          "from": "@/lib/types",
+          "kind": "import",
+          "imported": [
+            "Asset",
+            "AnimationWithFrames",
+            "AnimationWithCharacterAsset",
+            "CharacterWithAssets",
+            "ProjectWithRelations"
+          ]
+        },
+        {
+          "from": "@/lib/types",
+          "kind": "export",
+          "imported": [
+            "Asset",
+            "Project",
+            "Character",
+            "Animation",
+            "Frame",
+            "SpriteSheet",
+            "FrameWithAsset",
+            "AnimationWithFrames",
+            "CharacterWithAssets",
+            "SpriteSheetWithAsset",
+            "ProjectWithRelations",
+            "AnimationWithCharacterAsset",
+            "AnimationGenerationSettings",
+            "SpriteSheetGenerationSettings"
+          ]
+        },
+        {
+          "from": "@/lib/types",
+          "kind": "export",
+          "imported": [
+            "AssetType"
+          ]
         }
       ],
       "dependencies": [],
@@ -9587,6 +10062,50 @@
           "isExported": true
         }
       ]
+    },
+    "lib/types/api.ts": {
+      "imports": [],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "lib/types/index.ts": {
+      "imports": [
+        {
+          "from": "@/lib/generated/prisma/client",
+          "kind": "export",
+          "imported": [
+            "Project",
+            "Asset",
+            "Character",
+            "Frame"
+          ]
+        },
+        {
+          "from": "@/lib/generated/prisma/client",
+          "kind": "export",
+          "imported": [
+            "AssetType"
+          ]
+        },
+        {
+          "from": "@/lib/generated/prisma/client",
+          "kind": "import",
+          "imported": [
+            "Project",
+            "Asset",
+            "Character",
+            "PrismaAnimation",
+            "Frame",
+            "PrismaSpriteSheet"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": []
     },
     "lib/utils.ts": {
       "imports": [

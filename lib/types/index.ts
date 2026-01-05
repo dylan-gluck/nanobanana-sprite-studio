@@ -6,8 +6,8 @@ export type {
   Frame,
 } from "@/lib/generated/prisma/client";
 
-// Re-export enums
-export { AssetType } from "@/lib/generated/prisma/client";
+// Client-safe AssetType (mirrors Prisma enum without runtime dependency)
+export type AssetType = "reference" | "character" | "frame" | "spritesheet";
 
 // Extended types with relations
 import type {
