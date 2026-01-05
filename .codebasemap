@@ -2,8 +2,8 @@
   "metadata": {
     "version": 1,
     "root": "/Users/dylan/Workspace/vibe/megabananas",
-    "createdAt": "2026-01-05T02:34:21.297Z",
-    "updatedAt": "2026-01-05T02:34:21.297Z",
+    "createdAt": "2026-01-05T02:46:41.847Z",
+    "updatedAt": "2026-01-05T02:46:41.847Z",
     "totalFiles": 108
   },
   "tree": {
@@ -2172,7 +2172,8 @@
             "ImageIcon",
             "Download",
             "Trash2",
-            "Copy"
+            "Copy",
+            "Expand"
           ]
         },
         {

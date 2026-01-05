@@ -23,40 +23,28 @@ function buildSpritesheetPrompt(
 ): string {
   const { cols, rows } = getLayoutConfig(frameCount);
 
-  // Build step-by-step motion narrative
-  const frameProgression = Array.from({ length: frameCount }, (_, i) => {
-    const position = i / (frameCount - 1); // 0 to 1
-    if (position === 0) return `Frame ${i + 1}: Starting pose`;
-    if (position === 1) return `Frame ${i + 1}: End pose (ready to loop back)`;
-    if (position < 0.5) return `Frame ${i + 1}: Early motion (${Math.round(position * 100)}% through)`;
-    return `Frame ${i + 1}: Late motion (${Math.round(position * 100)}% through)`;
-  }).join("\n");
+  const gridDesc = rows === 1
+    ? `${cols} columns, 1 row (single horizontal strip)`
+    : `${cols} columns, ${rows} rows`;
 
-  const layoutDesc = rows === 1
-    ? `Arrange exactly ${frameCount} frames in a single horizontal row, evenly spaced left to right.`
-    : `Arrange exactly ${frameCount} frames in a ${cols}×${rows} grid (${cols} columns, ${rows} rows). Frames read left-to-right, top-to-bottom.`;
+  return `EXACTLY ${frameCount} FRAMES. NOT ${frameCount - 1}, NOT ${frameCount + 1}. EXACTLY ${frameCount}.
 
-  return `Create a ${frameCount}-frame animation sprite sheet for this character.
+Create a sprite sheet: ${frameCount} animation frames of this character performing "${animationName}" (${description}).
 
-ANIMATION: "${animationName}"
-${description}
+LAYOUT: ${gridDesc}
+- Uniform grid, all cells IDENTICAL size, edge-to-edge with NO gaps
+- NO borders, NO lines, NO dividers, NO separators between frames
+- Solid background color fills everything, frames touch seamlessly
 
-CHARACTER PRESERVATION (CRITICAL):
-Ensure that ALL visual features of this character remain EXACTLY unchanged across every frame:
-- Same face, hair, clothing, colors, proportions, and style
-- Same level of detail and rendering quality
-- Only the pose and position should change, nothing else about the character's appearance
+EACH FRAME:
+- Character${angleFragment} centered in cell at same scale and baseline
+- Same character appearance in every frame (face, colors, proportions, style)
+- Only pose changes for animation
 
-LAYOUT:
-${layoutDesc}
-Each frame shows the character${angleFragment} at a different point in the animation cycle.
+Frame 1 = start pose, Frame ${frameCount} = end pose ready to loop back to frame 1.
+Smooth motion progression across all ${frameCount} frames.
 
-ANIMATION SEQUENCE:
-${frameProgression}
-
-The motion should be smooth and cyclical - frame ${frameCount} should transition naturally back to frame 1 for seamless looping. Show clear, distinct poses that read well as animation keyframes.
-
-BACKGROUND: Use the exact same solid background color as the reference image for all frames.`;
+MANDATORY: Output EXACTLY ${frameCount} frames in a ${gridDesc} layout. Count them.`;
 }
 
 export async function POST(request: NextRequest) {
