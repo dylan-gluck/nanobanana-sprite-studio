@@ -115,7 +115,6 @@ model Animation {
   character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
   frames    Frame[]
 
-  @@unique([characterId, name])
   @@index([projectId])
   @@index([characterId])
 }
@@ -157,7 +156,6 @@ model SpriteSheet {
   project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
 
-  @@unique([characterId, name])
   @@index([projectId])
   @@index([characterId])
 }
