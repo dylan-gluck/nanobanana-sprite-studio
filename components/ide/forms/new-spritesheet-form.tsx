@@ -21,8 +21,7 @@ import { cn } from "@/lib/utils";
 const FRAME_PRESETS = [
   { value: 4, label: "4 frames" },
   { value: 6, label: "6 frames" },
-  { value: 8, label: "8 frames" },
-  { value: 12, label: "12 frames" },
+  { value: 10, label: "10 frames" },
   { value: 16, label: "16 frames" },
   { value: 24, label: "24 frames" },
 ];
