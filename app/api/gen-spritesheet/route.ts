@@ -5,6 +5,60 @@ import { characterPresets } from "@/lib/config/character-presets";
 import { editImage, type ImageContent } from "@/lib/gemini";
 import { prisma } from "@/lib/prisma";
 
+// Layout configuration for different frame counts
+function getLayoutConfig(frameCount: number): { aspectRatio: string; cols: number; rows: number } {
+  // Available ratios: 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9
+  if (frameCount <= 4) return { aspectRatio: "21:9", cols: frameCount, rows: 1 };
+  if (frameCount <= 8) return { aspectRatio: "21:9", cols: frameCount, rows: 1 };
+  if (frameCount <= 12) return { aspectRatio: "3:2", cols: 6, rows: 2 };
+  if (frameCount <= 16) return { aspectRatio: "16:9", cols: 8, rows: 2 };
+  return { aspectRatio: "3:2", cols: 8, rows: 3 }; // 24 frames: 8x3
+}
+
+function buildSpritesheetPrompt(
+  animationName: string,
+  description: string,
+  frameCount: number,
+  angleFragment: string,
+): string {
+  const { cols, rows } = getLayoutConfig(frameCount);
+
+  // Build step-by-step motion narrative
+  const frameProgression = Array.from({ length: frameCount }, (_, i) => {
+    const position = i / (frameCount - 1); // 0 to 1
+    if (position === 0) return `Frame ${i + 1}: Starting pose`;
+    if (position === 1) return `Frame ${i + 1}: End pose (ready to loop back)`;
+    if (position < 0.5) return `Frame ${i + 1}: Early motion (${Math.round(position * 100)}% through)`;
+    return `Frame ${i + 1}: Late motion (${Math.round(position * 100)}% through)`;
+  }).join("\n");
+
+  const layoutDesc = rows === 1
+    ? `Arrange exactly ${frameCount} frames in a single horizontal row, evenly spaced left to right.`
+    : `Arrange exactly ${frameCount} frames in a ${cols}×${rows} grid (${cols} columns, ${rows} rows). Frames read left-to-right, top-to-bottom.`;
+
+  return `Create a ${frameCount}-frame animation sprite sheet for this character.
+
+ANIMATION: "${animationName}"
+${description}
+
+CHARACTER PRESERVATION (CRITICAL):
+Ensure that ALL visual features of this character remain EXACTLY unchanged across every frame:
+- Same face, hair, clothing, colors, proportions, and style
+- Same level of detail and rendering quality
+- Only the pose and position should change, nothing else about the character's appearance
+
+LAYOUT:
+${layoutDesc}
+Each frame shows the character${angleFragment} at a different point in the animation cycle.
+
+ANIMATION SEQUENCE:
+${frameProgression}
+
+The motion should be smooth and cyclical - frame ${frameCount} should transition naturally back to frame 1 for seamless looping. Show clear, distinct poses that read well as animation keyframes.
+
+BACKGROUND: Use the exact same solid background color as the reference image for all frames.`;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { characterId, characterAssetId, name, description, frameCount, anglePreset } =
@@ -55,30 +109,21 @@ export async function POST(request: NextRequest) {
       data: base64Image,
     };
 
-    // Build sprite sheet prompt (v0 logic)
-    const cols = Math.ceil(Math.sqrt(frameCount));
-
     // Get angle preset prompt fragment
     const angleOption = characterPresets.angles.find(
       (a) => a.value === anglePreset,
     );
-    const angleFragment = angleOption ? `, ${angleOption.promptFragment}` : "";
+    const angleFragment = angleOption ? ` ${angleOption.promptFragment}` : "";
 
-    const prompt = `Create a sprite sheet grid for this character with the following animation:
+    // Build structured prompt with narrative description
+    const prompt = buildSpritesheetPrompt(name, description, frameCount, angleFragment);
 
-${description} (${frameCount} frames)
-
-Requirements:
-- Arrange all frames in a ${cols}x${cols} grid layout
-- Each frame should show the character in a clear pose for animation${angleFragment}
-- Maintain consistent character design across all frames
-- Use the same background color as the reference image
-- Keep frames evenly spaced for easy extraction
-- Total frames: ${frameCount}`;
+    // Get layout configuration for frame count
+    const { aspectRatio, cols, rows } = getLayoutConfig(frameCount);
 
     // Generate spritesheet
     const result = await editImage(source, prompt, [], {
-      aspectRatio: "1:1",
+      aspectRatio,
       resolution: "2K",
     });
 
@@ -112,7 +157,7 @@ Requirements:
         systemPrompt: prompt,
         userPrompt: name,
         referenceAssetIds: [characterAssetId],
-        generationSettings: { description, frameCount, anglePreset, cols },
+        generationSettings: { description, frameCount, anglePreset, aspectRatio, cols, rows },
         characterId,
       },
     });
@@ -129,7 +174,9 @@ Requirements:
           characterAssetId,
           anglePreset,
           frameCount,
+          aspectRatio,
           cols,
+          rows,
         },
       },
       include: {

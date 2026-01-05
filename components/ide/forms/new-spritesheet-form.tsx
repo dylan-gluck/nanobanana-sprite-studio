@@ -19,10 +19,12 @@ import { characterPresets } from "@/lib/config/character-presets";
 import { cn } from "@/lib/utils";
 
 const FRAME_PRESETS = [
-  { value: 4, label: "4 frames (2×2)" },
-  { value: 9, label: "9 frames (3×3)" },
-  { value: 16, label: "16 frames (4×4)" },
-  { value: 25, label: "25 frames (5×5)" },
+  { value: 4, label: "4 frames" },
+  { value: 6, label: "6 frames" },
+  { value: 8, label: "8 frames" },
+  { value: 12, label: "12 frames" },
+  { value: 16, label: "16 frames" },
+  { value: 24, label: "24 frames" },
 ];
 
 interface NewSpriteSheetFormProps {
