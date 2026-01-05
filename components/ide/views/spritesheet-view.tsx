@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Download, Calendar, Loader2, Trash2 } from "lucide-react";
+import { Download, Calendar, Loader2, Trash2, Grid3X3, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
@@ -13,6 +13,7 @@ import {
   type Asset,
 } from "@/lib/store";
 import { formatDistanceToNow } from "date-fns";
+import { characterPresets } from "@/lib/config/character-presets";
 
 interface SpriteSheetWithDetails extends SpriteSheetWithAsset {
   project: Project;
@@ -100,51 +101,83 @@ export function SpriteSheetView({ spriteSheetId }: SpriteSheetViewProps) {
     );
   }
 
+  const generationSettings = spriteSheet.generationSettings as {
+    frameCount?: number;
+    anglePreset?: string;
+  } | null;
+
+  const frameCount = generationSettings?.frameCount ?? 0;
+  const anglePreset = generationSettings?.anglePreset;
+  const angleLabel = anglePreset
+    ? characterPresets.angles.find((a) => a.value === anglePreset)?.label ?? anglePreset
+    : null;
+
   return (
     <ScrollArea className="h-full">
       <div className="p-6 max-w-5xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <h1 className="text-2xl font-bold text-foreground">
-              {spriteSheet.name}
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              <button
-                type="button"
-                className="hover:underline"
-                onClick={() =>
-                  openTab(
-                    "character",
-                    spriteSheet.character.id,
-                    spriteSheet.character.name,
-                  )
-                }
-              >
-                {spriteSheet.character.name}
-              </button>
-              {" · "}
-              {spriteSheet.project.name}
-            </p>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground pt-1">
-              <span className="flex items-center gap-1">
-                <Calendar className="h-4 w-4" />
-                Created{" "}
-                {formatDistanceToNow(new Date(spriteSheet.createdAt), {
-                  addSuffix: true,
-                })}
-              </span>
+        <div className="space-y-3">
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">
+                {spriteSheet.name}
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                <button
+                  type="button"
+                  className="hover:underline"
+                  onClick={() =>
+                    openTab(
+                      "character",
+                      spriteSheet.character.id,
+                      spriteSheet.character.name,
+                    )
+                  }
+                >
+                  {spriteSheet.character.name}
+                </button>
+                {" · "}
+                {spriteSheet.project.name}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={handleDownload}>
+                <Download className="h-4 w-4 mr-1" />
+                Download
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleDelete}>
+                <Trash2 className="h-4 w-4 mr-1" />
+                Delete
+              </Button>
             </div>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={handleDownload}>
-              <Download className="h-4 w-4 mr-1" />
-              Download
-            </Button>
-            <Button variant="outline" size="sm" onClick={handleDelete}>
-              <Trash2 className="h-4 w-4 mr-1" />
-              Delete
-            </Button>
+
+          {spriteSheet.description && (
+            <p className="text-sm text-muted-foreground">
+              {spriteSheet.description}
+            </p>
+          )}
+
+          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <Calendar className="h-4 w-4" />
+              Created{" "}
+              {formatDistanceToNow(new Date(spriteSheet.createdAt), {
+                addSuffix: true,
+              })}
+            </span>
+            {frameCount > 0 && (
+              <span className="flex items-center gap-1">
+                <Grid3X3 className="h-4 w-4" />
+                {frameCount} frames
+              </span>
+            )}
+            {angleLabel && (
+              <span className="flex items-center gap-1">
+                <Eye className="h-4 w-4" />
+                {angleLabel}
+              </span>
+            )}
           </div>
         </div>
 

@@ -2,8 +2,8 @@
   "metadata": {
     "version": 1,
     "root": "/Users/dylan/Workspace/vibe/megabananas",
-    "createdAt": "2026-01-05T01:55:27.042Z",
-    "updatedAt": "2026-01-05T01:55:27.042Z",
+    "createdAt": "2026-01-05T02:34:21.297Z",
+    "updatedAt": "2026-01-05T02:34:21.297Z",
     "totalFiles": 108
   },
   "tree": {
@@ -2892,6 +2892,17 @@
           ]
         },
         {
+          "from": "@/components/ui/select",
+          "kind": "import",
+          "imported": [
+            "Select",
+            "SelectContent",
+            "SelectItem",
+            "SelectTrigger",
+            "SelectValue"
+          ]
+        },
+        {
           "from": "@/components/ui/dropdown-menu",
           "kind": "import",
           "imported": [
@@ -3438,7 +3449,15 @@
             "Check",
             "ImagePlus",
             "Trash2",
-            "Upload"
+            "Upload",
+            "Palette"
+          ]
+        },
+        {
+          "from": "@/components/ui/badge",
+          "kind": "import",
+          "imported": [
+            "Badge"
           ]
         },
         {
@@ -3565,7 +3584,9 @@
             "Download",
             "Calendar",
             "Loader2",
-            "Trash2"
+            "Trash2",
+            "Grid3X3",
+            "Eye"
           ]
         },
         {
@@ -3605,6 +3626,13 @@
           "kind": "import",
           "imported": [
             "formatDistanceToNow"
+          ]
+        },
+        {
+          "from": "@/lib/config/character-presets",
+          "kind": "import",
+          "imported": [
+            "characterPresets"
           ]
         }
       ],

@@ -35,6 +35,10 @@ export function AssetThumbnail({
   const filename = asset.filePath.split("/").pop() || "Asset";
 
   const handleView = () => {
+    setActionContext({ type: "view-asset", asset });
+  };
+
+  const handleOpenTab = () => {
     openTab("asset", asset.id, filename);
     setActionContext({ type: "view-asset", asset });
   };
@@ -95,7 +99,7 @@ export function AssetThumbnail({
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem onClick={handleView}>
+        <ContextMenuItem onClick={handleOpenTab}>
           <Eye className="mr-2 h-4 w-4" />
           View
         </ContextMenuItem>

@@ -1,7 +1,7 @@
 "use client";
 
 import { formatDistanceToNow } from "date-fns";
-import { Calendar, MessageSquare, Settings, Image as ImageIcon, Download, Trash2, Copy } from "lucide-react";
+import { Calendar, MessageSquare, Settings, Image as ImageIcon, Download, Trash2, Copy, Expand } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +14,7 @@ interface AssetMetadataPanelProps {
 }
 
 export function AssetMetadataPanel({ asset }: AssetMetadataPanelProps) {
-  const { clearActionContext, refreshCurrentProject, closeTab } = useAppStore();
+  const { clearActionContext, refreshCurrentProject, closeTab, openTab } = useAppStore();
   const generationSettings = asset.generationSettings as Record<string, unknown> | null;
 
   const handleDownload = async () => {
@@ -54,12 +54,28 @@ export function AssetMetadataPanel({ asset }: AssetMetadataPanelProps) {
     <ScrollArea className="h-full w-full">
       <div className="p-4 space-y-6 overflow-hidden">
         {/* Preview thumbnail */}
-        <div className="aspect-square rounded-lg border border-border bg-muted overflow-hidden">
+        <div
+          className="group relative aspect-square rounded-lg border border-border bg-muted overflow-hidden cursor-pointer"
+          onClick={() => {
+            const filename = asset.filePath.split("/").pop() || "Asset";
+            openTab("asset", asset.id, filename);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              const filename = asset.filePath.split("/").pop() || "Asset";
+              openTab("asset", asset.id, filename);
+            }
+          }}
+        >
           <img
             src={asset.filePath}
             alt="Asset preview"
             className="w-full h-full object-cover"
           />
+          {/* Hover overlay with expand icon */}
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+            <Expand className="h-6 w-6 text-white" />
+          </div>
         </div>
 
         {/* Action buttons */}

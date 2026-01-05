@@ -43,4 +43,8 @@ next-env.d.ts
 # assets
 public/assets
 
+# prisma
 /lib/generated/prisma
+
+# codebase-map
+.codebasemap
