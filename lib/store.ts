@@ -7,7 +7,8 @@ export type TabType =
   | "character"
   | "animation"
   | "asset"
-  | "spritesheet";
+  | "spritesheet"
+  | "reference-assets";
 
 export interface Tab {
   id: string;

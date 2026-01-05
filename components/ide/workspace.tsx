@@ -1,6 +1,6 @@
 "use client";
 
-import { X, FolderOpen, Sparkles, Film, Layers, PanelLeft, PanelRight, Image as ImageIcon } from "lucide-react";
+import { X, FolderOpen, Sparkles, Film, Layers, PanelLeft, PanelRight, Image as ImageIcon, ImagePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useAppStore, type Tab } from "@/lib/store";
@@ -10,6 +10,7 @@ import { CharacterView } from "./views/character-view";
 import { AnimationView } from "./views/animation-view";
 import { AssetView } from "./views/asset-view";
 import { SpriteSheetView } from "./views/spritesheet-view";
+import { ReferenceAssetsView } from "./views/reference-assets-view";
 
 const tabIcons = {
 	project: FolderOpen,
@@ -17,6 +18,7 @@ const tabIcons = {
 	animation: Film,
 	asset: ImageIcon,
 	spritesheet: Layers,
+	"reference-assets": ImagePlus,
 };
 
 export function Workspace() {
@@ -138,6 +140,8 @@ function TabContent({ tab }: { tab: Tab }) {
 			return <AssetView assetId={tab.entityId} />;
 		case "spritesheet":
 			return <SpriteSheetView spriteSheetId={tab.entityId} />;
+		case "reference-assets":
+			return <ReferenceAssetsView projectId={tab.entityId} />;
 		default:
 			return <EmptyState />;
 	}

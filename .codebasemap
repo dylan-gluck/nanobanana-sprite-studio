@@ -2,9 +2,9 @@
   "metadata": {
     "version": 1,
     "root": "/Users/dylan/Workspace/vibe/megabananas",
-    "createdAt": "2026-01-05T05:15:29.169Z",
-    "updatedAt": "2026-01-05T05:15:29.169Z",
-    "totalFiles": 108
+    "createdAt": "2026-01-05T05:29:47.170Z",
+    "updatedAt": "2026-01-05T05:29:47.170Z",
+    "totalFiles": 109
   },
   "tree": {
     "name": "megabananas",
@@ -286,6 +286,10 @@
                   },
                   {
                     "name": "project-view.tsx",
+                    "type": "file"
+                  },
+                  {
+                    "name": "reference-assets-view.tsx",
                     "type": "file"
                   },
                   {
@@ -662,6 +666,7 @@
     "components/ide/views/asset-view.tsx",
     "components/ide/views/character-view.tsx",
     "components/ide/views/project-view.tsx",
+    "components/ide/views/reference-assets-view.tsx",
     "components/ide/views/spritesheet-view.tsx",
     "components/ide/workspace.tsx",
     "components/image-preview.tsx",
@@ -802,6 +807,10 @@
     {
       "from": "components/ide/workspace.tsx",
       "to": "components/ide/views/project-view.tsx"
+    },
+    {
+      "from": "components/ide/workspace.tsx",
+      "to": "components/ide/views/reference-assets-view.tsx"
     },
     {
       "from": "components/ide/workspace.tsx",
@@ -2849,7 +2858,8 @@
             "Settings",
             "Sparkles",
             "PanelLeftClose",
-            "Loader2"
+            "Loader2",
+            "ImagePlus"
           ]
         },
         {
@@ -3539,6 +3549,80 @@
       "classes": [],
       "constants": []
     },
+    "components/ide/views/reference-assets-view.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "useEffect",
+            "useState",
+            "useCallback"
+          ]
+        },
+        {
+          "from": "lucide-react",
+          "kind": "import",
+          "imported": [
+            "Loader2",
+            "ImagePlus",
+            "Upload"
+          ]
+        },
+        {
+          "from": "@/components/ui/scroll-area",
+          "kind": "import",
+          "imported": [
+            "ScrollArea"
+          ]
+        },
+        {
+          "from": "sonner",
+          "kind": "import",
+          "imported": [
+            "toast"
+          ]
+        },
+        {
+          "from": "@/lib/store",
+          "kind": "import",
+          "imported": [
+            "useAppStore",
+            "Asset"
+          ]
+        },
+        {
+          "from": "@/components/ui/asset-thumbnail",
+          "kind": "import",
+          "imported": [
+            "AssetThumbnail"
+          ]
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "ReferenceAssetsView",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "ReferenceAssetsViewProps"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
     "components/ide/views/spritesheet-view.tsx": {
       "imports": [
         {
@@ -3638,7 +3722,8 @@
             "Layers",
             "PanelLeft",
             "PanelRight",
-            "ImageIcon"
+            "ImageIcon",
+            "ImagePlus"
           ]
         },
         {
@@ -3705,6 +3790,13 @@
           "imported": [
             "SpriteSheetView"
           ]
+        },
+        {
+          "from": "./views/reference-assets-view",
+          "kind": "import",
+          "imported": [
+            "ReferenceAssetsView"
+          ]
         }
       ],
       "dependencies": [
@@ -3712,6 +3804,7 @@
         "components/ide/views/asset-view.tsx",
         "components/ide/views/character-view.tsx",
         "components/ide/views/project-view.tsx",
+        "components/ide/views/reference-assets-view.tsx",
         "components/ide/views/spritesheet-view.tsx"
       ],
       "functions": [

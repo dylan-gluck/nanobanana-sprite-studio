@@ -12,6 +12,7 @@ import {
 	Sparkles,
 	PanelLeftClose,
 	Loader2,
+	ImagePlus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -148,6 +149,12 @@ export function LeftSidebar() {
 	const handleProjectClick = () => {
 		if (currentProject) {
 			openTab("project", currentProject.id, currentProject.name);
+		}
+	};
+
+	const handleReferenceAssetsClick = () => {
+		if (currentProject) {
+			openTab("reference-assets", currentProject.id, "Reference Assets");
 		}
 	};
 
@@ -365,17 +372,28 @@ export function LeftSidebar() {
 					</DialogContent>
 				</Dialog>
 
-				{/* Project quick action */}
+				{/* Project quick actions */}
 				{currentProject && (
-					<Button
-						variant="ghost"
-						size="sm"
-						className="w-full mt-2 justify-start text-muted-foreground hover:text-foreground"
-						onClick={handleProjectClick}
-					>
-						<Home className="h-4 w-4 mr-2" />
-						Project Home
-					</Button>
+					<>
+						<Button
+							variant="ghost"
+							size="sm"
+							className="w-full mt-2 justify-start text-muted-foreground hover:text-foreground"
+							onClick={handleProjectClick}
+						>
+							<Home className="h-4 w-4 mr-2" />
+							Project Home
+						</Button>
+						<Button
+							variant="ghost"
+							size="sm"
+							className="w-full justify-start text-muted-foreground hover:text-foreground"
+							onClick={handleReferenceAssetsClick}
+						>
+							<ImagePlus className="h-4 w-4 mr-2" />
+							Reference Assets
+						</Button>
+					</>
 				)}
 			</div>
 
